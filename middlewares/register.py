@@ -18,12 +18,19 @@ class RegisterMiddleware(BaseMiddleware):
             reply_markup=RegisterKeyboard.keyboard,
         )
 
+    @staticmethod
+    def __assert_handler_is_not_register():
+        return current_handler.get() != registrate_user
+
     async def __check_user(self,
                            message: types.Message,
                            ) -> None:
 
         if not self.user:
-            await self.__send_register_message(message)
+
+            if self.__assert_handler_is_not_register():
+                await self.__send_register_message(message)
+
             raise CancelHandler()
 
     async def on_process_callback_query(self,
@@ -32,18 +39,16 @@ class RegisterMiddleware(BaseMiddleware):
                                         ) -> None:
         self.user = data['user']
 
-        handler = current_handler.get()
-
         try:
             await self.__check_user(
                 callback.message,
             )
 
         except CancelHandler as er:
-            if handler != registrate_user:
+            if self.__assert_handler_is_not_register():
                 raise er
         else:
-            if handler == registrate_user:
+            if not self.__assert_handler_is_not_register():
                 await try_delete_message(callback.message)
                 raise CancelHandler()
 
