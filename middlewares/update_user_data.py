@@ -18,9 +18,6 @@ class UpdateUserDataMiddleware(BaseMiddleware):
         if user is None:
             return
 
-        if user.name != new_info.first_name:
-            user.name = new_info.first_name
-
         if user.telegram_username != new_info.username:
             user.telegram_username = new_info.username
 
