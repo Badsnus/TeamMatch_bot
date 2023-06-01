@@ -1,4 +1,3 @@
-import sqlalchemy.exc
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 from sqlalchemy.exc import DataError
@@ -6,21 +5,10 @@ from sqlalchemy.exc import DataError
 from keyboards.inline.profile import (
     BackToEditContactsMenu,
     EditContactsKeyboard,
-    ProfileKeyboard,
 )
 from loader import dp
 from models import User, UserContact
 from states.profile import CreateContactState
-
-
-@dp.callback_query_handler(text=ProfileKeyboard.change_contacts, state='*')
-async def show_change_contacts_menu(call: types.CallbackQuery,
-                                    user: User, state: FSMContext) -> None:
-    await state.finish()
-    await call.message.edit_text(
-        'Меню контактов',
-        reply_markup=EditContactsKeyboard.get_keyboard(user.contacts),
-    )
 
 
 @dp.callback_query_handler(text=EditContactsKeyboard.callback_create_prefix)

@@ -1,2 +1,3 @@
 from . import profile
-from . import edit_contacts
+from . import edit_contacts_create
+from . import edit_contacts_menu
