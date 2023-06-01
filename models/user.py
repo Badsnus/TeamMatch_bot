@@ -2,13 +2,15 @@ from __future__ import annotations
 
 import time
 
-from sqlalchemy import Integer, select, String
+from sqlalchemy import Integer, ForeignKey, select, String
 from sqlalchemy import orm
+from sqlalchemy.orm import selectinload
 
 from models.base_model import Base
 from loader import session
 
 
+# TODO мб подумать про repeat кода в create()
 class User(Base):
     __tablename__ = 'user'
 
@@ -33,10 +35,17 @@ class User(Base):
         Integer(),
     )
 
+    contacts: orm.Mapped[list['UserContact']] = orm.relationship(
+        back_populates="user", cascade="all, delete-orphan"
+    )
+
     @staticmethod
-    async def get_by_telegram_id(telegram_id) -> User | None:
+    async def get_by_telegram_id(telegram_id: int) -> User | None:
+        # TODO оптимизация запросов
         return await session.scalar(
-            select(User).where(User.telegram_id == telegram_id),
+            select(User).where(User.telegram_id == telegram_id)
+            .outerjoin(UserContact)
+            .options(selectinload(User.contacts)),
         )
 
     @staticmethod
@@ -54,3 +63,27 @@ class User(Base):
         await session.commit()
 
         return user
+
+
+class UserContact(Base):
+    __tablename__ = 'user_contact'
+    id: orm.Mapped[int] = orm.mapped_column(primary_key=True)
+
+    user_id: orm.Mapped[int] = orm.mapped_column(ForeignKey("user.id"))
+    user: orm.Mapped[User] = orm.relationship(back_populates="contacts")
+
+    name: orm.Mapped[str] = orm.mapped_column(String(30))
+    link: orm.Mapped[str] = orm.mapped_column(String(60))
+
+    @staticmethod
+    async def create(user_id: int, name: str, link: str) -> UserContact:
+        contact = UserContact(
+            user_id=user_id,
+            name=name,
+            link=link,
+        )
+
+        session.add(contact)
+        await session.commit()
+
+        return contact
