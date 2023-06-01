@@ -5,12 +5,16 @@ from models import UserContact
 
 
 class EditContactsKeyboard:
-    callback_edit_prefix = 'profile_edit_contact-'
+    callback_update_prefix = 'profile_update_contact-'
     callback_create_prefix = 'profile_create_contact'
 
     @classmethod
+    def get_contact_id_from_call_data(cls, callback_data: str):
+        return callback_data.replace(cls.callback_update_prefix, '')
+
+    @classmethod
     def __generate_callback_edit(cls, contact_id):
-        return cls.callback_edit_prefix + str(contact_id)
+        return cls.callback_update_prefix + str(contact_id)
 
     @classmethod
     def get_keyboard(cls,

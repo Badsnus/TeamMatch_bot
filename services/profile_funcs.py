@@ -1,4 +1,4 @@
-from models import User
+from models import User, UserContact
 from utils.format_data import format_date_from_timestamp, format_username
 
 
@@ -15,4 +15,11 @@ def get_profile_text(user: User) -> str:
 Юзернейм: {format_username(user.telegram_username)}
 Дата регистрации: {format_date_from_timestamp(user.registration_time)}
 {contacts_text}
+    '''
+
+
+def get_contact_text(contact: UserContact) -> str:
+    return f'''
+Имя: <code>{contact.name}</code>
+Ссылка: {contact.link}
     '''

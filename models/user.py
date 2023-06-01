@@ -7,6 +7,7 @@ from sqlalchemy import orm
 from sqlalchemy.orm import selectinload
 
 from models.base_model import Base
+from models.exceptions import UserContactNotFound
 from loader import session
 
 
@@ -65,6 +66,7 @@ class User(Base):
         return user
 
 
+# TODO ограничить число контактов
 class UserContact(Base):
     __tablename__ = 'user_contact'
     id: orm.Mapped[int] = orm.mapped_column(primary_key=True)
@@ -87,3 +89,21 @@ class UserContact(Base):
         await session.commit()
 
         return contact
+
+    @staticmethod
+    async def get(contact_id: int, **kwargs) -> UserContact:
+        query = select(UserContact).where(UserContact.id == contact_id)
+
+        for key, value in kwargs.items():
+            query = query.filter(getattr(UserContact, key) == value)
+
+        contact = await session.scalar(query)
+        if contact is None:
+            raise UserContactNotFound
+
+        return contact
+
+    @staticmethod
+    async def delete(contact_id: int) -> None:
+        await session.delete(await UserContact.get(contact_id))
+        await session.commit()
