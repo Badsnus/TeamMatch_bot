@@ -13,9 +13,10 @@ from models import User, UserContact
 from states.profile import CreateContactState
 
 
-@dp.callback_query_handler(text=ProfileKeyboard.change_contacts)
+@dp.callback_query_handler(text=ProfileKeyboard.change_contacts, state='*')
 async def show_change_contacts_menu(call: types.CallbackQuery,
-                                    user: User) -> None:
+                                    user: User, state: FSMContext) -> None:
+    await state.finish()
     await call.message.edit_text(
         'Меню контактов',
         reply_markup=EditContactsKeyboard.get_keyboard(user.contacts),
@@ -24,7 +25,10 @@ async def show_change_contacts_menu(call: types.CallbackQuery,
 
 @dp.callback_query_handler(text=EditContactsKeyboard.callback_create_prefix)
 async def start_create_contact(call: types.CallbackQuery) -> None:
-    await call.message.edit_text('Пришлите название контакта')
+    await call.message.edit_text(
+        'Пришлите название контакта',
+        reply_markup=BackToEditContactsMenu.keyboard,
+    )
     await CreateContactState.name.set()
 
 
@@ -33,6 +37,7 @@ async def get_name(message: types.Message, state: FSMContext) -> None:
     await state.update_data({CreateContactState.name_field_name: message.text})
     await message.answer(
         'Пришлите ссылку, на который этот контакт будет ввести',
+        reply_markup=BackToEditContactsMenu.keyboard,
     )
     await CreateContactState.link.set()
 
