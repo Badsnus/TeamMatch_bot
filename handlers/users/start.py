@@ -1,6 +1,7 @@
 from aiogram import types
 from aiogram.dispatcher.filters.builtin import CommandStart
 
+from keyboards.default.main_keyboard import MainKeyboard
 from loader import dp
 
 
@@ -8,4 +9,5 @@ from loader import dp
 async def bot_start(message: types.Message):
     await message.answer(
         'Привет. Я Бот TeamMatch. Я помогу тебе найти тиммейтов для проектов',
+        reply_markup=MainKeyboard.keyboard,
     )
