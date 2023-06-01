@@ -18,15 +18,19 @@ class User(Base):
         index=True,
         unique=True,
     )
-    last_active: orm.Mapped[int] = orm.mapped_column(
-        Integer(),
-    )
     name: orm.Mapped[str] = orm.mapped_column(
         String(40),
     )
     telegram_username: orm.Mapped[str | None] = orm.mapped_column(
         String(40),
         nullable=True,
+    )
+
+    last_active: orm.Mapped[int] = orm.mapped_column(
+        Integer(),
+    )
+    registration_time: orm.Mapped[int] = orm.mapped_column(
+        Integer(),
     )
 
     @staticmethod
@@ -39,10 +43,11 @@ class User(Base):
     async def create(telegram_id: int, name: str,
                      telegram_username: str | None = None) -> User:
         user = User(
-            name=name,
-            last_active=time.time(),
             telegram_id=telegram_id,
+            name=name,
             telegram_username=telegram_username,
+            last_active=time.time(),
+            registration_time=time.time(),
         )
 
         session.add(user)

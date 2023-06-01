@@ -6,7 +6,7 @@ from loader import dp
 
 
 @dp.message_handler(CommandStart())
-async def bot_start(message: types.Message):
+async def bot_start(message: types.Message) -> None:
     await message.answer(
         'Привет. Я Бот TeamMatch. Я помогу тебе найти тиммейтов для проектов',
         reply_markup=MainKeyboard.keyboard,
