@@ -13,7 +13,7 @@ class EditExperienceKeyboard:
         return int(callback_data.replace(cls.edit_call_prefix, ''))
 
     @classmethod
-    def _generate_callback_data(cls, experience_id: int) -> str:
+    def generate_callback_data(cls, experience_id: int) -> str:
         return cls.edit_call_prefix + str(experience_id)
 
     @classmethod
@@ -25,7 +25,7 @@ class EditExperienceKeyboard:
             keyboard.insert(
                 InlineKeyboardButton(
                     text='Изменить ' + exp.name[:10],
-                    callback_data=cls._generate_callback_data(exp.id),
+                    callback_data=cls.generate_callback_data(exp.id),
                 ),
             )
 
@@ -42,3 +42,16 @@ class EditExperienceKeyboard:
             ),
         )
         return keyboard
+
+
+class BackToEditExperienceRetrieveKeyboard:
+    @staticmethod
+    def get_keyboard(exp_id: int) -> InlineKeyboardMarkup:
+        return InlineKeyboardMarkup(inline_keyboard=[[
+            InlineKeyboardButton(
+                'Вернуться к редактированию опыта',
+                callback_data=EditExperienceKeyboard.generate_callback_data(
+                    exp_id,
+                ),
+            ),
+        ]])

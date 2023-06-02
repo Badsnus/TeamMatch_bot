@@ -218,3 +218,13 @@ class UserExperience(Base):
             raise UserExperienceNotFound
 
         return experience
+
+    @staticmethod
+    async def update(exp_id: int, **kwargs) -> UserExperience:
+        experience = await UserExperience.get(exp_id)
+        for key, value in kwargs.items():
+            setattr(experience, key, value)
+
+        await session.commit()
+
+        return experience

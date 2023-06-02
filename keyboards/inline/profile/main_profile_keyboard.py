@@ -3,6 +3,7 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from keyboards.inline.profile import (
     BACK_TO_PROFILE_CALLBACK,
     CHANGE_SKILL_CALLBACK,
+    CHANGE_EXPERIENCE_CALLBACK,
 )
 
 
@@ -11,7 +12,7 @@ class ProfileKeyboard:
     change_name = 'profile_change_name'
     change_skills = CHANGE_SKILL_CALLBACK
     change_contacts = 'profile_change_contacts'
-    change_experience = 'profile_change_experience'
+    change_experience = CHANGE_EXPERIENCE_CALLBACK
 
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
         [
