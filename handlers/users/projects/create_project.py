@@ -3,11 +3,18 @@ from aiogram.dispatcher import FSMContext
 
 from keyboards.inline.projects import (
     BackToCreateProjectKeyboard,
+    BackToMainProjectsKeyboard,
     CreateProjectKeyboard,
     ProjectKeyboard,
 )
+from models import Project
+from models.exceptions import ValidationError
 from loader import bot, dp
-from services.projects import get_create_project_text, get_fields_values
+from services.projects import (
+    get_create_project_text,
+    get_fields_items,
+    get_fields_values,
+)
 from states.projects import CreateProjectState, CrPrEnum
 from utils.delete_message import try_delete_message
 
@@ -88,3 +95,22 @@ async def set_logo(message: types.Message, state: FSMContext) -> None:
     await state.update_data(data)
 
     await delete_message_and_send_update_menu(data, message)
+
+
+@dp.callback_query_handler(text=CreateProjectKeyboard.approve_create_call)
+async def create_project(call: types.CallbackQuery,
+                         state: FSMContext) -> None:
+    data = get_fields_items(await state.get_data())
+
+    try:
+        project = Project(**data)
+        await project.save()
+
+    except ValidationError:
+        await call.answer('Заполните все обязательные поля')
+        return
+    # TODO мб тут редирект на страницу проекта?
+    await call.message.edit_text(
+        'Проект создан',
+        reply_markup=BackToMainProjectsKeyboard.keyboard,
+    )

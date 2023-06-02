@@ -1,5 +1,7 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
+from keyboards.inline.projects import BACK_TO_PROJECTS_CALL
+
 
 class ProjectKeyboard:
     create_project_call = 'projects_create'
@@ -38,5 +40,14 @@ class BackToCreateProjectKeyboard:
         InlineKeyboardButton(
             'Вернуться назад',
             callback_data=ProjectKeyboard.create_project_call,
+        ),
+    ]])
+
+
+class BackToMainProjectsKeyboard:
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[[
+        InlineKeyboardButton(
+            'Вернуться к проектам',
+            callback_data=BACK_TO_PROJECTS_CALL,
         ),
     ]])

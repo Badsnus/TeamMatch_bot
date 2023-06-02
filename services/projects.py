@@ -33,4 +33,13 @@ def get_create_project_text(
 
 
 def get_fields_values(data: dict) -> list[str]:
-    return [data.get(field.value) for field in CreateProjectKeyboard.Fields]
+    return [
+        data.get(field.value, '') for field in CreateProjectKeyboard.Fields
+    ]
+
+
+def get_fields_items(data: dict) -> dict[str, str]:
+    return dict(zip(
+        (field.value for field in CreateProjectKeyboard.Fields),
+        get_fields_values(data),
+    ))

@@ -51,7 +51,7 @@ class CreateProjectKeyboard:
         [
             InlineKeyboardButton(
                 'Создать проект',
-                callback_data=BACK_TO_PROJECTS_CALL,
+                callback_data=approve_create_call,
             ),
         ],
         [
