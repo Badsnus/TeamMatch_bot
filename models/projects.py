@@ -16,10 +16,6 @@ class Project(Base):
     description: orm.Mapped[str] = orm.mapped_column(String(300))
     logo_image_id: orm.Mapped[str] = orm.mapped_column(String(100))
 
-    remuneration: orm.Mapped[int] = orm.mapped_column(
-        Integer(),
-        nullable=True,
-    )
     project_url: orm.Mapped[str] = orm.mapped_column(
         URLType(200),
         nullable=True,

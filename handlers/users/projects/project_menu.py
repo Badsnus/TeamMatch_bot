@@ -6,7 +6,7 @@ from loader import dp
 
 
 @dp.message_handler(text=MainKeyboard.projects)
-async def show_projects_menu(message: types.Message):
+async def show_projects_menu(message: types.Message) -> None:
     await message.answer(
         'Проекты',
         reply_markup=ProjectKeyboard.keyboard,

@@ -2,8 +2,8 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 
 class ProjectKeyboard:
-    create_project_call = 'projects_create_project'
-    my_projects_call = 'projects_my_projects'
+    create_project_call = 'projects_create'
+    my_projects_call = 'projects_my'
     project_notice_call = 'projects_notice'
     match_project_call = 'projects_match'
 
