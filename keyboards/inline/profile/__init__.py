@@ -21,3 +21,4 @@ from .delete_skills_keyboard import DeleteSkillKeyboard
 from .main_profile_keyboard import BackToProfileKeyboard, ProfileKeyboard
 
 # TODO мб бек клавы перенести в один класс где-то рядом с профилем
+# TODO надо убрать кучу репит кода
