@@ -10,7 +10,11 @@ from sqlalchemy.ext.asyncio import (
 
 from data import config
 
-bot = Bot(token=config.BOT_TOKEN, parse_mode=types.ParseMode.HTML)
+bot = Bot(
+    disable_web_page_preview=True,
+    parse_mode=types.ParseMode.HTML,
+    token=config.BOT_TOKEN,
+)
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
 engine = create_async_engine(config.DB_PATH, echo=True)

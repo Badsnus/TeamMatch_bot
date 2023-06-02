@@ -184,8 +184,25 @@ class UserExperience(Base):
     id: orm.Mapped[int] = orm.mapped_column(primary_key=True)
 
     name: orm.Mapped[str] = orm.mapped_column(String(50))
-    link: orm.Mapped[str] = orm.mapped_column(String(60), nullable=True)
+    link: orm.Mapped[str] = orm.mapped_column(String(60))
     description: orm.Mapped[str] = orm.mapped_column(String(300))
 
     user_id: orm.Mapped[int] = orm.mapped_column(ForeignKey("user.id"))
     user: orm.Mapped[User] = orm.relationship(back_populates="experience")
+
+    @staticmethod
+    async def create(user_id: int,
+                     name: str,
+                     link: str,
+                     description: str) -> UserExperience:
+        experience = UserExperience(
+            user_id=user_id,
+            name=name,
+            link=link,
+            description=description,
+        )
+
+        session.add(experience)
+        await session.commit()
+
+        return experience
