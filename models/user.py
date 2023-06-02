@@ -91,6 +91,16 @@ class UserContact(Base):
         return contact
 
     @staticmethod
+    async def update(contact_id: int, **kwargs) -> UserContact:
+        contact = await UserContact.get(contact_id)
+        for key, value in kwargs.items():
+            setattr(contact, key, value)
+
+        await session.commit()
+
+        return contact
+
+    @staticmethod
     async def get(contact_id: int, **kwargs) -> UserContact:
         query = select(UserContact).where(UserContact.id == contact_id)
 

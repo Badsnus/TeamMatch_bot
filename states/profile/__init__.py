@@ -1,1 +1,2 @@
 from .create_contact import CreateContactState
+from .update_contact_field import UpdateContactFieldState

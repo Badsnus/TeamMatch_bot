@@ -4,17 +4,20 @@ from keyboards.inline.profile import BACK_TO_PROFILE_CALLBACK
 from models import UserContact
 
 
-class EditContactsKeyboard:
+class UpdateContactMixin:
     callback_update_prefix = 'profile_update_contact-'
-    callback_create_prefix = 'profile_create_contact'
 
     @classmethod
-    def get_contact_id_from_call_data(cls, callback_data: str):
-        return callback_data.replace(cls.callback_update_prefix, '')
+    def get_contact_id_from_call_data(cls, callback_data: str) -> int:
+        return int(callback_data.replace(cls.callback_update_prefix, ''))
 
     @classmethod
-    def __generate_callback_edit(cls, contact_id):
+    def _generate_callback_edit(cls, contact_id: int) -> str:
         return cls.callback_update_prefix + str(contact_id)
+
+
+class EditContactsKeyboard(UpdateContactMixin):
+    callback_create_prefix = 'profile_create_contact'
 
     @classmethod
     def get_keyboard(cls,
@@ -25,7 +28,7 @@ class EditContactsKeyboard:
             keyboard.insert(
                 InlineKeyboardButton(
                     contact.name,
-                    callback_data=cls.__generate_callback_edit(contact.id),
+                    callback_data=cls._generate_callback_edit(contact.id),
                 ),
             )
 
@@ -38,3 +41,14 @@ class EditContactsKeyboard:
             callback_data=BACK_TO_PROFILE_CALLBACK,
         ))
         return keyboard
+
+
+class BackToUpdateContactKeyboard(UpdateContactMixin):
+    @classmethod
+    def get_keyboard(cls, contact_id: int) -> InlineKeyboardMarkup:
+        return InlineKeyboardMarkup(inline_keyboard=[[
+            InlineKeyboardButton(
+                'Обратно к контакту',
+                callback_data=cls._generate_callback_edit(contact_id),
+            ),
+        ]])

@@ -42,7 +42,7 @@ async def create_contact(message: types.Message, state: FSMContext,
         contact = await UserContact.create(user.id, name, link)
         text = f'Контакт <code>{contact.name}</code> - успешно создан'
 
-    except DataError as _:
+    except DataError as _:  # TODO обрабатывать это не здесь а в middleware
         name_limit = UserContact.__table__.c.name.type.length
         link_limit = UserContact.__table__.c.link.type.length
         text = (

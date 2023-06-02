@@ -1,25 +1,48 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 import keyboards.inline.profile as profile_keyboards
+from models.user import UserContact
 
 
-class EditContactsUpdateKeyboard:
+class UpdateContactsKeyboard:
     callback_delete_contact_prefix = 'profile_delete_contact-'
-    callback_update_name_prefix = 'profile_update_contact_name-'
-    callback_update_link_prefix = 'profile_update_contact_link-'
+    callback_update_prefix = 'profile_update_contact_field-'
+    callback_update_name_prefix = (
+        f'{callback_update_prefix}{UserContact.name.key}-'
+    )
+    callback_update_link_prefix = (
+        f'{callback_update_prefix}{UserContact.link.key}-'
+    )
 
     ALL_CALLBACK_PREFIXES = (
         ('Обновить название', callback_update_name_prefix),
         ('Обновить ссылку', callback_update_link_prefix),
         ('Удалить контакт', callback_delete_contact_prefix),
     )
+    FIELD_TRANSLATE = {
+        UserContact.name.key: 'название',
+        UserContact.link.key: 'ссылка',
+    }
 
     @classmethod
-    def get_contact_id_from_call_data(cls, current_prefix, callback_data: str):
-        return callback_data.replace(current_prefix, '')
+    def get_contact_id_from_call_data(cls,
+                                      current_prefix: str,
+                                      callback_data: str,
+                                      ) -> int:
+        return int(callback_data.replace(current_prefix, ''))
 
     @classmethod
-    def __generate_callback_edit(cls, current_prefix, contact_id):
+    def get_field_and_id_by_calldata(cls,
+                                     callback_data: str,
+                                     ) -> tuple[str, str, int]:
+        *_, field, contact_id = callback_data.split('-')
+        return field, cls.FIELD_TRANSLATE.get(field), int(contact_id)
+
+    @classmethod
+    def __generate_callback_edit(cls,
+                                 current_prefix: str,
+                                 contact_id: int,
+                                 ) -> str:
         return current_prefix + str(contact_id)
 
     @classmethod
