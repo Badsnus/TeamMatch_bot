@@ -31,3 +31,12 @@ class ProjectKeyboard:
             ),
         ],
     ])
+
+
+class BackToCreateProjectKeyboard:
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[[
+        InlineKeyboardButton(
+            'Вернуться назад',
+            callback_data=ProjectKeyboard.create_project_call,
+        ),
+    ]])
