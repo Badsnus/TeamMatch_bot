@@ -1,7 +1,10 @@
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 
-from keyboards.inline.profile import EditExperienceKeyboard
+from keyboards.inline.profile import (
+    BackToEditExperienceKeyboard,
+    EditExperienceKeyboard,
+)
 from loader import dp
 from models import User, UserExperience
 from states.profile import AddExperienceState
@@ -11,7 +14,10 @@ from states.profile import AddExperienceState
 async def ask_name(call: types.CallbackQuery) -> None:
     await AddExperienceState.name.set()
 
-    await call.message.edit_text(AddExperienceState.name_text)
+    await call.message.edit_text(
+        AddExperienceState.name_text,
+        reply_markup=BackToEditExperienceKeyboard.keyboard,
+    )
 
 
 @dp.message_handler(state=AddExperienceState.name)
@@ -19,7 +25,10 @@ async def ask_link(message: types.Message, state: FSMContext) -> None:
     await state.update_data(name=message.text)
     await AddExperienceState.link.set()
 
-    await message.answer(AddExperienceState.link_text)
+    await message.answer(
+        AddExperienceState.link_text,
+        reply_markup=BackToEditExperienceKeyboard.keyboard,
+    )
 
 
 @dp.message_handler(state=AddExperienceState.link)
@@ -27,7 +36,10 @@ async def ask_description(message: types.Message, state: FSMContext) -> None:
     await state.update_data(link=message.text)
     await AddExperienceState.description.set()
 
-    await message.answer(AddExperienceState.description_text)
+    await message.answer(
+        AddExperienceState.description_text,
+        reply_markup=BackToEditExperienceKeyboard.keyboard,
+    )
 
 
 @dp.message_handler(state=AddExperienceState.description)
@@ -44,4 +56,7 @@ async def get_description_and_create_experience(message: types.Message,
         description=message.text,
     )
 
-    await message.answer('Опыт работы создан')
+    await message.answer(
+        '<b>Опыт работы создан</b>',
+        reply_markup=BackToEditExperienceKeyboard.keyboard,
+    )

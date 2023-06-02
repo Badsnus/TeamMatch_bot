@@ -1,6 +1,7 @@
 from .const import BACK_TO_PROFILE_CALLBACK, CHANGE_SKILL_CALLBACK
 from .back_to_edit_contacts_keyboard import BackToEditContactsKeyboard
-from .back_to_edit_skills_menu import BackToEditSkillsKeyboard
+from .back_to_edit_experience_keyboard import BackToEditExperienceKeyboard
+from .back_to_edit_skills_keyboard import BackToEditSkillsKeyboard
 from .edit_contacts_keyboard import (
     BackToUpdateContactKeyboard,
     EditContactsKeyboard,

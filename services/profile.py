@@ -4,23 +4,23 @@ from utils.format_data import format_date_from_timestamp, format_username
 
 def get_experience_text(experience: list[UserExperience]) -> str:
     experience_text = '\n'.join(
-        f'<code>{exp.name}</code> - <a href="{exp.link}">ссылка</a>\n'
+        f'<code>{exp.name}</code> - <a href="{exp.link}">ссылка</a>'
         for exp in experience
     )
     if not experience_text:
         experience_text = '<code>Опыта пока что нет нет :(</code>'
-    return '\nВаш опыт:\n' + experience_text
+    return '\n<b>Ваш опыт:</b>\n' + experience_text
 
 
 def get_current_skills_text(skills: list[UserSkill]) -> str:
     skills_text = ';'.join(skill.name for skill in skills)
     if not skills_text:
         skills_text = 'Скиллов пока что нет нет :('
-    return '\nВаши скиллы:\n<code>' + skills_text + '</code>'
+    return '\n<b>Ваши скиллы:</b>\n<code>' + skills_text + '</code>'
 
 
 def get_profile_text(user: User) -> str:
-    contacts_text = '\nВаши контакты:\n' + '\n'.join(
+    contacts_text = '\n<b>Ваши контакты:</b>\n' + '\n'.join(
         (f'<code>{contact.name}</code> - {contact.link}' for contact in
          user.contacts),
     ) if user.contacts else ''
@@ -28,13 +28,14 @@ def get_profile_text(user: User) -> str:
     experience_text = (
         get_experience_text(user.experience) if user.experience else ''
     )
+    date_of_reg = format_date_from_timestamp(user.registration_time)
 
     return f'''
-Профиль | {user.telegram_id}
+<b>Профиль</b> | ID: <code>{user.telegram_id}</code>
 
-Имя: {user.name}
-Юзернейм: {format_username(user.telegram_username)}
-Дата регистрации: {format_date_from_timestamp(user.registration_time)}
+Имя: <b>{user.name}</b>
+Юзернейм: <b>{format_username(user.telegram_username)}</b>
+Дата регистрации: <code>{date_of_reg}</code>
 {contacts_text}
 {skills_text}
 {experience_text}
