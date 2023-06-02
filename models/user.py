@@ -54,8 +54,10 @@ class User(Base):
             select(User).where(User.telegram_id == telegram_id)
             .outerjoin(UserContact)
             .outerjoin(UserSkill)
+            .outerjoin(UserExperience)
             .options(selectinload(User.contacts))
             .options(selectinload(User.skills))
+            .options(selectinload(User.experience))
         )
 
     @staticmethod
