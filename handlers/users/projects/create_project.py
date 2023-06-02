@@ -38,14 +38,15 @@ async def ask_new_value(call: types.CallbackQuery, state: FSMContext) -> None:
 
 @dp.message_handler(state=CreateProjectState.value)
 async def set_new_value(message: types.Message, state: FSMContext) -> None:
+    # TODO мб стоит это отсюда вынести, но хз, так как не хочется
+    # куда-то стейт передавать
     await state.reset_state(with_data=False)
     data = await state.get_data()
     update_name = data.get(CrPrEnum.update_field.value)
+    data[update_name] = message.text
     await state.update_data({update_name: message.text})
 
     await try_delete_message(message)
-
-    data = await state.get_data()
 
     await bot.edit_message_text(
         chat_id=message.from_user.id,
