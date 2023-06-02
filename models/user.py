@@ -177,6 +177,7 @@ class UserSkill(Base):
 
 
 class UserExperience(Base):
+    __tablename__ = 'user_experience'
     # Костыльный вариант на время мвп, потом надо добавить дату и пр.
     id: orm.Mapped[int] = orm.mapped_column(primary_key=True)
 
