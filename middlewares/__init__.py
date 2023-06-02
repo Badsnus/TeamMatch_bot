@@ -10,7 +10,7 @@ if __name__ == 'middlewares':
         SetUserMiddleware,
         ThrottlingMiddleware,
         RegisterMiddleware,
-        UpdateUserDataMiddleware
+        UpdateUserDataMiddleware,
     ]
     for middleware in middlewares:
         dp.middleware.setup(middleware())
