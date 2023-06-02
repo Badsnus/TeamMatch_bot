@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from sqlalchemy import Integer, ForeignKey, orm, select, String, TIMESTAMP
+from sqlalchemy import DateTime, Integer, ForeignKey, orm, select, String
 
 from models.base_model import Base
 from models.exceptions import (
@@ -33,10 +33,10 @@ class User(Base):
     )
     # TODO это мб в редис вынести куда-то? чтобы бд не дергать постоянно
     last_active: orm.Mapped[int] = orm.mapped_column(
-        TIMESTAMP(),
+        DateTime(),
     )
     registration_time: orm.Mapped[int] = orm.mapped_column(
-        TIMESTAMP(),
+        DateTime(),
     )
 
     contacts: orm.Mapped[list['UserContact']] = orm.relationship(
