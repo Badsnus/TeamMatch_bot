@@ -7,7 +7,8 @@ from sqlalchemy import orm
 from sqlalchemy.orm import selectinload
 
 from models.base_model import Base
-from models.exceptions import UserContactNotFound, UserSkillNotFound
+from models.exceptions import UserContactNotFound, UserSkillNotFound, \
+    UserExperienceNotFound
 from loader import session
 
 
@@ -204,5 +205,16 @@ class UserExperience(Base):
 
         session.add(experience)
         await session.commit()
+
+        return experience
+
+    @staticmethod
+    async def get(experience_id: int) -> UserExperience:
+        experience = await session.scalar(
+            select(UserExperience).where(UserExperience.id == experience_id),
+        )
+
+        if experience is None:
+            raise UserExperienceNotFound
 
         return experience

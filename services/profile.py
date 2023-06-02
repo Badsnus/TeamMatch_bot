@@ -49,6 +49,14 @@ def get_contact_text(contact: UserContact) -> str:
     '''
 
 
+def get_experience_retrieve_text(experience: UserExperience) -> str:
+    return f'''
+<b>Название</b>: <code>{experience.name}</code>
+<b>Ссылка</b>: <code>{experience.link}</code>
+<b>Описание</b>: <code>{experience.description}</code>
+    '''
+
+
 class SkillsAppender:
 
     @staticmethod
