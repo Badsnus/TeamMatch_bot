@@ -126,7 +126,7 @@ class UserContact(Base):
     @staticmethod
     async def get(contact_id: int) -> UserContact:
         contact = await session.scalar(
-            select(UserContact).where(UserContact.id == contact_id),
+            select(UserContact).where(UserContact.id == contact_id).limit(1),
         )
 
         if contact is None:
@@ -166,7 +166,7 @@ class UserSkill(Base):
     @staticmethod
     async def get(skill_id: int) -> UserSkill:
         skill = await session.scalar(
-            select(UserSkill).where(UserSkill.id == skill_id),
+            select(UserSkill).where(UserSkill.id == skill_id).limit(1),
         )
 
         if skill is None:
@@ -212,7 +212,8 @@ class UserExperience(Base):
     @staticmethod
     async def get(experience_id: int) -> UserExperience:
         experience = await session.scalar(
-            select(UserExperience).where(UserExperience.id == experience_id),
+            select(UserExperience).where(UserExperience.id == experience_id)
+            .limit(1),
         )
 
         if experience is None:

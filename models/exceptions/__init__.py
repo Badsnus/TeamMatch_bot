@@ -3,3 +3,4 @@ from .user_exceptions import (
     UserExperienceNotFound,
     UserSkillNotFound,
 )
+from .vacancy_exceptions import VacancyNotFound
