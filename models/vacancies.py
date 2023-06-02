@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from sqlalchemy import orm, select, String
+from sqlalchemy import orm, select, String, desc
 from sqlalchemy_utils import URLType
 
 from loader import session
@@ -46,11 +46,15 @@ class Vacancy(Base):
         return vacancy
 
     @staticmethod
-    async def get_queryset_by_filters(limit: int = 2,
-                                      *filters) -> list[Vacancy]:
+    async def get_queryset_by_filters(*filters,
+                                      limit: int = 2,
+                                      use_desc=False) -> list[Vacancy]:
         queryset = select(Vacancy)
 
         for f in filters:
             queryset = queryset.filter(f)
+        # TODO плохо так делать, надо бы отдельную функцию
+        if use_desc:
+            queryset = queryset.order_by(desc(Vacancy.id))
 
-        return await session.scalars(queryset.limit(limit))
+        return (await session.scalars(queryset.limit(limit))).all()

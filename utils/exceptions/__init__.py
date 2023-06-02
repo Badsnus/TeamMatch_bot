@@ -1,0 +1,1 @@
+from .do_not_fild_vacancy_for_slider import DoNotFindVacancyForSlider

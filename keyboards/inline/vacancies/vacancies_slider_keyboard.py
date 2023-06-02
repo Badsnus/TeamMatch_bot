@@ -4,13 +4,21 @@ from models import Vacancy
 
 
 class VacanciesSliderKeyboard:
+    RIGHT = 'right'
+    LEFT = 'left'
+
     slider_callback = 'vacancy_slider-'
-    slider_right = slider_callback + 'right-'
-    slider_left = slider_callback + 'left-'
+    slider_right = slider_callback + RIGHT
+    slider_left = slider_callback + LEFT
+
+    @classmethod
+    def parse_callback(cls, callback: str) -> tuple[str, int]:
+        _, direction, vacancy_id = callback.split('-')
+        return direction, int(vacancy_id)
 
     @staticmethod
     def generate_callback(current_callback: str, vacancy_id: int) -> str:
-        return current_callback + str(vacancy_id)
+        return f'{current_callback}-{vacancy_id}'
 
     @staticmethod
     def _add_button(buttons: list[InlineKeyboardButton],
