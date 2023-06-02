@@ -37,6 +37,19 @@ async def ask_new_value(call: types.CallbackQuery, state: FSMContext) -> None:
     await CreateProjectState.text_value.set()
 
 
+async def delete_message_and_send_update_menu(
+        data: dict,
+        message: types.Message) -> None:
+    await try_delete_message(message)
+
+    await bot.edit_message_text(
+        chat_id=message.from_user.id,
+        message_id=data.get(CrPrEnum.message_id.value),
+        text=get_create_project_text(*get_fields_values(data)),
+        reply_markup=CreateProjectKeyboard.keyboard,
+    )
+
+
 @dp.message_handler(state=CreateProjectState.text_value)
 async def set_new_value(message: types.Message, state: FSMContext) -> None:
     # TODO мб стоит это отсюда вынести, но хз, так как не хочется
@@ -47,14 +60,7 @@ async def set_new_value(message: types.Message, state: FSMContext) -> None:
     data[update_name] = message.text
     await state.update_data({update_name: message.text})
 
-    await try_delete_message(message)
-
-    await bot.edit_message_text(
-        chat_id=message.from_user.id,
-        message_id=data.get(CrPrEnum.message_id.value),
-        text=get_create_project_text(*get_fields_values(data)),
-        reply_markup=CreateProjectKeyboard.keyboard,
-    )
+    await delete_message_and_send_update_menu(data, message)
 
 
 @dp.callback_query_handler(text=CreateProjectKeyboard.edit_logo_call)
@@ -75,11 +81,4 @@ async def set_logo(message: types.Message, state: FSMContext) -> None:
     ] = message.photo[-1].file_id
     await state.update_data(data)
 
-    await try_delete_message(message)
-
-    await bot.edit_message_text(
-        chat_id=message.from_user.id,
-        message_id=data.get(CrPrEnum.message_id.value),
-        text=get_create_project_text(*get_fields_values(data)),
-        reply_markup=CreateProjectKeyboard.keyboard,
-    )
+    await delete_message_and_send_update_menu(data, message)
