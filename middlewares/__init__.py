@@ -1,8 +1,8 @@
 from loader import dp
-from middlewares.throttling import ThrottlingMiddleware
 from middlewares.register import RegisterMiddleware
-from middlewares.update_user_data import UpdateUserDataMiddleware
 from middlewares.set_user import SetUserMiddleware
+from middlewares.throttling import ThrottlingMiddleware
+from middlewares.update_user_data import UpdateUserDataMiddleware
 
 if __name__ == 'middlewares':
     # НЕ ТРОГАЙ ПОРЯДОК!!!
