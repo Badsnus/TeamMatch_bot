@@ -1,12 +1,22 @@
-from models import User, UserContact, UserSkill
+from models import User, UserContact, UserExperience, UserSkill
 from utils.format_data import format_date_from_timestamp, format_username
 
 
+def get_experience_text(experience: list[UserExperience]) -> str:
+    experience_text = '\n'.join(
+        f'<code>{exp.name}</code> - <a href="{exp.link}">ссылка</a>\n'
+        for exp in experience
+    )
+    if not experience_text:
+        experience_text = '<code>Опыта пока что нет нет :(</code>'
+    return '\nВаш опыт:\n' + experience_text
+
+
 def get_current_skills_text(skills: list[UserSkill]) -> str:
-    skills_list = ';'.join(skill.name for skill in skills)
-    if not skills_list:
-        skills_list = 'Скиллов пока что нет нет :('
-    return '\nВаши скиллы:\n<code>' + skills_list + '</code>'
+    skills_text = ';'.join(skill.name for skill in skills)
+    if not skills_text:
+        skills_text = 'Скиллов пока что нет нет :('
+    return '\nВаши скиллы:\n<code>' + skills_text + '</code>'
 
 
 def get_profile_text(user: User) -> str:
@@ -15,6 +25,9 @@ def get_profile_text(user: User) -> str:
          user.contacts),
     ) if user.contacts else ''
     skills_text = get_current_skills_text(user.skills) if user.skills else ''
+    experience_text = (
+        get_experience_text(user.experience) if user.experience else ''
+    )
 
     return f'''
 Профиль | {user.telegram_id}
@@ -24,6 +37,7 @@ def get_profile_text(user: User) -> str:
 Дата регистрации: {format_date_from_timestamp(user.registration_time)}
 {contacts_text}
 {skills_text}
+{experience_text}
     '''
 
 

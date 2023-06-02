@@ -1,3 +1,3 @@
 from . import exceptions
 from .create_all_db import create_all_db
-from .user import User, UserContact, UserSkill
+from .user import User, UserContact, UserExperience, UserSkill
