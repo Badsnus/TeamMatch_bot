@@ -8,3 +8,5 @@ from .edit_contacts_keyboard import (
 from .edit_contacts_update_keyboard import UpdateContactsKeyboard
 from .edit_skills_keyboard import EditSkillsKeyboard
 from .main_profile_keyboard import BackToProfileKeyboard, ProfileKeyboard
+
+# TODO мб бек клавы перенести в один класс где-то рядом с профилем

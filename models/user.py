@@ -28,7 +28,7 @@ class User(Base):
         String(40),
         nullable=True,
     )
-
+    # TODO это мб в редис вынести куда-то? чтобы бд не дергать постоянно
     last_active: orm.Mapped[int] = orm.mapped_column(
         Integer(),
     )
