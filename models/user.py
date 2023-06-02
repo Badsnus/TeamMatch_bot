@@ -40,13 +40,17 @@ class User(Base):
     )
 
     contacts: orm.Mapped[list['UserContact']] = orm.relationship(
-        back_populates="user", cascade="all, delete-orphan",
+        back_populates='user', cascade='all, delete-orphan',
     )
     skills: orm.Mapped[list['UserSkill']] = orm.relationship(
-        back_populates="user", cascade="all, delete-orphan",
+        back_populates='user', cascade='all, delete-orphan',
     )
     experience: orm.Mapped[list['UserExperience']] = orm.relationship(
-        back_populates="user", cascade="all, delete-orphan",
+        back_populates='user', cascade='all, delete-orphan',
+    )
+
+    projects: orm.Mapped[list['Project']] = orm.relationship(
+        secondary='employee', back_populates='users',
     )
 
     @staticmethod
@@ -94,8 +98,8 @@ class UserContact(Base):
     __tablename__ = 'user_contact'
     id: orm.Mapped[int] = orm.mapped_column(primary_key=True)
 
-    user_id: orm.Mapped[int] = orm.mapped_column(ForeignKey("user.id"))
-    user: orm.Mapped[User] = orm.relationship(back_populates="contacts")
+    user_id: orm.Mapped[int] = orm.mapped_column(ForeignKey('user.id'))
+    user: orm.Mapped[User] = orm.relationship(back_populates='contacts')
 
     name: orm.Mapped[str] = orm.mapped_column(String(30))
     link: orm.Mapped[str] = orm.mapped_column(String(60))
@@ -145,8 +149,8 @@ class UserSkill(Base):
     __tablename__ = 'user_skill'
     id: orm.Mapped[int] = orm.mapped_column(primary_key=True)
 
-    user_id: orm.Mapped[int] = orm.mapped_column(ForeignKey("user.id"))
-    user: orm.Mapped[User] = orm.relationship(back_populates="skills")
+    user_id: orm.Mapped[int] = orm.mapped_column(ForeignKey('user.id'))
+    user: orm.Mapped[User] = orm.relationship(back_populates='skills')
 
     name: orm.Mapped[str] = orm.mapped_column(String(50))
 
@@ -189,8 +193,8 @@ class UserExperience(Base):
     link: orm.Mapped[str] = orm.mapped_column(String(60))
     description: orm.Mapped[str] = orm.mapped_column(String(300))
 
-    user_id: orm.Mapped[int] = orm.mapped_column(ForeignKey("user.id"))
-    user: orm.Mapped[User] = orm.relationship(back_populates="experience")
+    user_id: orm.Mapped[int] = orm.mapped_column(ForeignKey('user.id'))
+    user: orm.Mapped[User] = orm.relationship(back_populates='experience')
 
     @staticmethod
     async def create(user_id: int,
