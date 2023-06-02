@@ -6,7 +6,7 @@ from models import UserExperience
 
 class EditExperienceKeyboard:
     add_call = 'profile_experience_add'
-    edit_call_prefix = 'profile_experience_singe_edit-'
+    edit_call_prefix = 'profile_experience_retrieve-'
 
     @classmethod
     def parse_experience_id(cls, callback_data: str) -> int:

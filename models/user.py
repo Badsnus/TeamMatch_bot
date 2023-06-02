@@ -228,3 +228,8 @@ class UserExperience(Base):
         await session.commit()
 
         return experience
+
+    @staticmethod
+    async def delete(exp_id: int) -> None:
+        await session.delete(await UserExperience.get(exp_id))
+        await session.commit()

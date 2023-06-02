@@ -2,6 +2,7 @@ from aiogram import types
 from aiogram.dispatcher import FSMContext
 
 from keyboards.inline.profile import (
+    BackToEditExperienceKeyboard,
     BackToEditExperienceRetrieveKeyboard,
     EditExperienceKeyboard,
     EditExperienceRetrieveKeyboard,
@@ -32,7 +33,7 @@ async def edit_experience_retrieve_menu(call: types.CallbackQuery,
 @dp.callback_query_handler(
     text_startswith=EditExperienceRetrieveKeyboard.call_prefix)
 async def ask_new_value(call: types.CallbackQuery, state: FSMContext) -> None:
-    field_name, exp_id = EditExperienceRetrieveKeyboard.parse_call_data(
+    field_name, exp_id = EditExperienceRetrieveKeyboard.parse_update_call_data(
         call.data,
     )
     await state.update_data(field_name=field_name, exp_id=exp_id)
@@ -58,4 +59,18 @@ async def get_and_edit_value(message: types.Message,
     await message.answer(
         'Поле успешно изменено',
         reply_markup=BackToEditExperienceRetrieveKeyboard.get_keyboard(exp_id),
+    )
+
+
+@dp.callback_query_handler(
+    text_startswith=EditExperienceRetrieveKeyboard.call_delete_prefix)
+async def delete_experience(call: types.CallbackQuery) -> None:
+    exp_id = EditExperienceRetrieveKeyboard.parse_delete_call_data(
+        call.data,
+    )
+    await UserExperience.delete(exp_id)
+
+    await call.message.edit_text(
+        'Поле успела удалена',
+        reply_markup=BackToEditExperienceKeyboard.keyboard,
     )
