@@ -1,5 +1,5 @@
 from models import User, UserContact, UserExperience, UserSkill
-from utils.format_data import format_date_from_timestamp, format_username
+from utils.format_data import format_username
 
 
 def get_experience_text(experience: list[UserExperience]) -> str:
@@ -28,7 +28,7 @@ def get_profile_text(user: User) -> str:
     experience_text = (
         get_experience_text(user.experience) if user.experience else ''
     )
-    date_of_reg = format_date_from_timestamp(user.registration_time)
+    date_of_reg = user.registration_time.date()
 
     return f'''
 <b>Профиль</b> | ID: <code>{user.telegram_id}</code>

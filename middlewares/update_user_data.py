@@ -1,4 +1,4 @@
-import time
+from datetime import datetime
 
 from aiogram import types
 from aiogram.dispatcher.middlewares import BaseMiddleware
@@ -21,7 +21,7 @@ class UpdateUserDataMiddleware(BaseMiddleware):
         if user.telegram_username != new_info.username:
             user.telegram_username = new_info.username
 
-        user.last_active = time.time()
+        user.last_active = datetime.now()
         await session.commit()
 
     async def on_process_callback_query(self,

@@ -14,7 +14,7 @@ class MainKeyboard:
                 KeyboardButton(vacancies),
             ],
             [
-                KeyboardButton(profile)
+                KeyboardButton(profile),
             ],
         ],
     )

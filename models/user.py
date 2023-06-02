@@ -1,14 +1,15 @@
 from __future__ import annotations
 
-import time
+from datetime import datetime
 
-from sqlalchemy import Integer, ForeignKey, select, String
-from sqlalchemy import orm
-from sqlalchemy.orm import selectinload
+from sqlalchemy import Integer, ForeignKey, orm, select, String, TIMESTAMP
 
 from models.base_model import Base
-from models.exceptions import UserContactNotFound, UserSkillNotFound, \
-    UserExperienceNotFound
+from models.exceptions import (
+    UserContactNotFound,
+    UserExperienceNotFound,
+    UserSkillNotFound,
+)
 from loader import session
 
 
@@ -32,10 +33,10 @@ class User(Base):
     )
     # TODO это мб в редис вынести куда-то? чтобы бд не дергать постоянно
     last_active: orm.Mapped[int] = orm.mapped_column(
-        Integer(),
+        TIMESTAMP(),
     )
     registration_time: orm.Mapped[int] = orm.mapped_column(
-        Integer(),
+        TIMESTAMP(),
     )
 
     contacts: orm.Mapped[list['UserContact']] = orm.relationship(
@@ -56,9 +57,9 @@ class User(Base):
             .outerjoin(UserContact)
             .outerjoin(UserSkill)
             .outerjoin(UserExperience)
-            .options(selectinload(User.contacts))
-            .options(selectinload(User.skills))
-            .options(selectinload(User.experience))
+            .options(orm.selectinload(User.contacts))
+            .options(orm.selectinload(User.skills))
+            .options(orm.selectinload(User.experience))
         )
 
     @staticmethod
@@ -68,8 +69,8 @@ class User(Base):
             telegram_id=telegram_id,
             name=name,
             telegram_username=telegram_username,
-            last_active=time.time(),
-            registration_time=time.time(),
+            last_active=datetime.now(),
+            registration_time=datetime.now(),
         )
 
         session.add(user)
