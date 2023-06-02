@@ -4,7 +4,8 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 
 
 class CreateProjectState(StatesGroup):
-    value = State()
+    text_value = State()
+    image_value = State()
 
 
 class CrPrEnum(Enum):

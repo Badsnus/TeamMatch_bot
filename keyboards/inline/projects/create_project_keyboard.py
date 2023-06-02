@@ -18,7 +18,7 @@ class CreateProjectKeyboard:
 
     edit_name_call = call_field_prefix + Fields.name.value
     edit_description_call = call_field_prefix + Fields.description.value
-    edit_logo_call = call_field_prefix + Fields.logo_image_id.value
+    edit_logo_call = call_prefix + '_photo-' + Fields.logo_image_id.value
     edit_project_url_call = call_field_prefix + Fields.project_url.value
 
     approve_create_call = call_prefix + '_approve'
