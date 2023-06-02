@@ -33,12 +33,10 @@ async def get_vacancy_and_offset(direction: str,
 
     if direction == VacanciesSliderKeyboard.RIGHT:
         need_right = check_need_direction(len(vacancies))
-        vacancy = vacancies[0]
     else:
         need_left = check_need_direction(len(vacancies))
-        vacancy = vacancies[0]
 
-    return vacancy, need_left, need_right
+    return vacancies[0], need_left, need_right
 
 
 async def get_vacancy_start_index() -> int:
