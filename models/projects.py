@@ -33,7 +33,7 @@ class Project(Base):
     users: orm.Mapped[list[User]] = orm.relationship(
         secondary='employee', back_populates='projects',
     )
-    experience: orm.Mapped[list['UserExperience']] = orm.relationship(
+    candidates: orm.Mapped[list['Candidate']] = orm.relationship(
         back_populates='project', cascade='all, delete-orphan',
     )
 
@@ -58,3 +58,6 @@ class Candidate(Base):
     role: orm.Mapped[str] = orm.mapped_column(String(30))
 
     project_id: orm.Mapped[int] = orm.mapped_column(ForeignKey('project.id'))
+    project: orm.Mapped[Project] = orm.relationship(
+        back_populates='candidates',
+    )
