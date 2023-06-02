@@ -25,7 +25,7 @@ async def get_vacancy_and_offset(direction: str,
     vacancies = await Vacancy.get_queryset_by_filters(
         Vacancy.id < vacancy_id if direction == VacanciesSliderKeyboard.RIGHT
         else Vacancy.id > vacancy_id,
-        use_desc=True,
+        use_desc=direction == VacanciesSliderKeyboard.RIGHT,
     )
 
     if not vacancies:
@@ -36,7 +36,7 @@ async def get_vacancy_and_offset(direction: str,
         vacancy = vacancies[0]
     else:
         need_left = check_need_direction(len(vacancies))
-        vacancy = vacancies[need_left]  # cuz len(vacancies) can be 1
+        vacancy = vacancies[0]
 
     return vacancy, need_left, need_right
 

@@ -5,7 +5,8 @@ from keyboards.inline.vacancies import VacanciesSliderKeyboard
 from loader import dp
 from services.vacancies import (
     get_vacancy_text,
-    get_vacancy_and_offset, get_vacancy_start_index,
+    get_vacancy_and_offset,
+    get_vacancy_start_index,
 )
 
 
