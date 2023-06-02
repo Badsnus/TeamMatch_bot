@@ -7,6 +7,7 @@ from .edit_contacts_keyboard import (
 )
 from .edit_contacts_update_keyboard import UpdateContactsKeyboard
 from .edit_skills_keyboard import EditSkillsKeyboard
+from .edit_experience_keyboard import EditExperienceKeyboard
 from .delete_skills_keyboard import DeleteSkillKeyboard
 from .main_profile_keyboard import BackToProfileKeyboard, ProfileKeyboard
 
