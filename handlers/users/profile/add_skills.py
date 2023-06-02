@@ -6,7 +6,7 @@ from keyboards.inline.profile import (
     EditSkillsKeyboard,
 )
 from loader import dp
-from models import User, UserSkill
+from models import User
 from services.profile import SkillsAppender
 from states.profile import AddSkillsState
 
