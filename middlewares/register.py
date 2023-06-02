@@ -4,7 +4,7 @@ from aiogram.dispatcher.middlewares import BaseMiddleware
 
 from handlers.users.register import registrate_user
 from keyboards.inline.register_keyboard import RegisterKeyboard
-from utils.delete_callback_message import try_delete_message
+from utils.delete_message import try_delete_message
 
 
 class RegisterMiddleware(BaseMiddleware):

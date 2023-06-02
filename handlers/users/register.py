@@ -4,7 +4,7 @@ from handlers.users.start import bot_start
 from keyboards.inline.register_keyboard import RegisterKeyboard
 from loader import dp
 from models import User
-from utils.delete_callback_message import try_delete_message
+from utils.delete_message import try_delete_message
 
 
 @dp.callback_query_handler(text=RegisterKeyboard.approve_callback)

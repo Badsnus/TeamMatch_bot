@@ -12,12 +12,20 @@ class CreateProjectKeyboard:
         logo_image_id = 'logo_image_id'
         project_url = 'project_url'
 
-    call_prefix = 'project_create_'
+    call_prefix = 'project_create'
 
-    edit_name_call = call_prefix + Fields.name.value
-    edit_description_call = call_prefix + Fields.description.value
-    edit_logo_call = call_prefix + Fields.logo_image_id.value
-    edit_project_url_call = call_prefix + Fields.project_url.value
+    call_field_prefix = call_prefix + '_field-'
+
+    edit_name_call = call_field_prefix + Fields.name.value
+    edit_description_call = call_field_prefix + Fields.description.value
+    edit_logo_call = call_field_prefix + Fields.logo_image_id.value
+    edit_project_url_call = call_field_prefix + Fields.project_url.value
+
+    approve_create_call = call_prefix + '_approve'
+
+    @classmethod
+    def parse_field_name(cls, callback_data: str) -> str:
+        return callback_data.replace(cls.call_field_prefix, '')
 
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
         [
@@ -38,6 +46,12 @@ class CreateProjectKeyboard:
             InlineKeyboardButton(
                 'Изменить ссылку',
                 callback_data=edit_project_url_call,
+            ),
+        ],
+        [
+            InlineKeyboardButton(
+                'Создать проект',
+                callback_data=BACK_TO_PROJECTS_CALL,
             ),
         ],
         [

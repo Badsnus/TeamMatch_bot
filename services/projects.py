@@ -1,3 +1,6 @@
+from keyboards.inline.projects import CreateProjectKeyboard
+
+
 def get_projects_main_menu_text() -> str:
     return 'Проекты'
 
@@ -27,3 +30,7 @@ def get_create_project_text(
 {format_field_text('Логотип', logo_image_id)}
 {format_field_text('Ссылка на проект', project_url)}
     '''
+
+
+def get_fields_values(data: dict) -> list[str]:
+    return [data.get(field.value) for field in CreateProjectKeyboard.Fields]
