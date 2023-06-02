@@ -11,6 +11,7 @@ from models.exceptions import UserContactNotFound, UserSkillNotFound
 from loader import session
 
 
+# TODO эт бы по файлам разнести
 # TODO мб подумать про repeat кода в create(), update() и т.д.
 class User(Base):
     __tablename__ = 'user'
@@ -40,6 +41,9 @@ class User(Base):
         back_populates="user", cascade="all, delete-orphan",
     )
     skills: orm.Mapped[list['UserSkill']] = orm.relationship(
+        back_populates="user", cascade="all, delete-orphan",
+    )
+    experience: orm.Mapped[list['UserExperience']] = orm.relationship(
         back_populates="user", cascade="all, delete-orphan",
     )
 
@@ -170,3 +174,15 @@ class UserSkill(Base):
     async def delete(skill_id: int) -> None:
         await session.delete(await UserSkill.get(skill_id))
         await session.commit()
+
+
+class UserExperience(Base):
+    # Костыльный вариант на время мвп, потом надо добавить дату и пр.
+    id: orm.Mapped[int] = orm.mapped_column(primary_key=True)
+
+    name: orm.Mapped[str] = orm.mapped_column(String(50))
+    link: orm.Mapped[str] = orm.mapped_column(String(60), nullable=True)
+    description: orm.Mapped[str] = orm.mapped_column(String(300))
+
+    user_id: orm.Mapped[int] = orm.mapped_column(ForeignKey("user.id"))
+    user: orm.Mapped[User] = orm.relationship(back_populates="experience")
