@@ -5,4 +5,4 @@ from .edit_contacts_keyboard import (
     EditContactsKeyboard,
 )
 from .edit_contacts_update_keyboard import UpdateContactsKeyboard
-from .main_profile_keyboard import ProfileKeyboard
+from .main_profile_keyboard import BackToProfileKeyboard, ProfileKeyboard

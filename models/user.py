@@ -11,7 +11,7 @@ from models.exceptions import UserContactNotFound
 from loader import session
 
 
-# TODO мб подумать про repeat кода в create()
+# TODO мб подумать про repeat кода в create(), update() и т.д.
 class User(Base):
     __tablename__ = 'user'
 
@@ -37,7 +37,7 @@ class User(Base):
     )
 
     contacts: orm.Mapped[list['UserContact']] = orm.relationship(
-        back_populates="user", cascade="all, delete-orphan"
+        back_populates="user", cascade="all, delete-orphan",
     )
 
     @staticmethod
@@ -64,6 +64,13 @@ class User(Base):
         await session.commit()
 
         return user
+
+    async def update(self, commit=True, **kwargs):
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+        if commit:
+            await session.commit()
 
 
 # TODO ограничить число контактов
@@ -101,13 +108,11 @@ class UserContact(Base):
         return contact
 
     @staticmethod
-    async def get(contact_id: int, **kwargs) -> UserContact:
-        query = select(UserContact).where(UserContact.id == contact_id)
+    async def get(contact_id: int) -> UserContact:
+        contact = await session.scalar(
+            select(UserContact).where(UserContact.id == contact_id),
+        )
 
-        for key, value in kwargs.items():
-            query = query.filter(getattr(UserContact, key) == value)
-
-        contact = await session.scalar(query)
         if contact is None:
             raise UserContactNotFound
 
