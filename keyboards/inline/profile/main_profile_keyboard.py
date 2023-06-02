@@ -5,7 +5,7 @@ from keyboards.inline.profile import BACK_TO_PROFILE_CALLBACK
 
 class ProfileKeyboard:
     change_name = 'profile_change_name'
-    change_specialization = 'profile_change_specialization'
+    change_skills = 'profile_change_skills'
     change_contacts = 'profile_change_contacts'
     change_experience = 'profile_change_experience'
 
@@ -18,8 +18,8 @@ class ProfileKeyboard:
         ],
         [
             InlineKeyboardButton(
-                'Изменить специализацию',
-                callback_data=change_specialization,
+                'Изменить скиллы',
+                callback_data=change_skills,
             ),
         ],
         [

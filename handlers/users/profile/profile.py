@@ -5,7 +5,7 @@ from keyboards.default.main_keyboard import MainKeyboard
 from keyboards.inline.profile import BACK_TO_PROFILE_CALLBACK, ProfileKeyboard
 from loader import dp
 from models import User
-from services.profile_funcs import get_profile_text
+from services.profile import get_profile_text
 
 
 @dp.message_handler(text=MainKeyboard.profile)

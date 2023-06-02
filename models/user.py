@@ -39,6 +39,9 @@ class User(Base):
     contacts: orm.Mapped[list['UserContact']] = orm.relationship(
         back_populates="user", cascade="all, delete-orphan",
     )
+    skills: orm.Mapped[list['UserSkill']] = orm.relationship(
+        back_populates="user", cascade="all, delete-orphan",
+    )
 
     @staticmethod
     async def get_by_telegram_id(telegram_id: int) -> User | None:
@@ -46,7 +49,9 @@ class User(Base):
         return await session.scalar(
             select(User).where(User.telegram_id == telegram_id)
             .outerjoin(UserContact)
-            .options(selectinload(User.contacts)),
+            .outerjoin(UserSkill)
+            .options(selectinload(User.contacts))
+            .options(selectinload(User.skills))
         )
 
     @staticmethod
@@ -122,3 +127,26 @@ class UserContact(Base):
     async def delete(contact_id: int) -> None:
         await session.delete(await UserContact.get(contact_id))
         await session.commit()
+
+
+class UserSkill(Base):
+    __tablename__ = 'user_skill'
+    id: orm.Mapped[int] = orm.mapped_column(primary_key=True)
+
+    user_id: orm.Mapped[int] = orm.mapped_column(ForeignKey("user.id"))
+    user: orm.Mapped[User] = orm.relationship(back_populates="skills")
+
+    name: orm.Mapped[str] = orm.mapped_column(String(50))
+
+    @staticmethod
+    async def create_many(user_id: int,
+                          skills_list: list[str]) -> list[UserSkill]:
+        user_skills = [
+            UserSkill(user_id=user_id, name=skill)
+            for skill in skills_list
+        ]
+
+        session.add_all(user_skills)
+        await session.commit()
+
+        return user_skills

@@ -3,7 +3,7 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from .main_profile_keyboard import ProfileKeyboard
 
 
-class BackToEditContactsMenu:
+class BackToEditContactsKeyboard:
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
         [
             InlineKeyboardButton(

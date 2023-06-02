@@ -2,14 +2,14 @@ from aiogram import types
 from aiogram.dispatcher import FSMContext
 
 from keyboards.inline.profile import (
-    BackToEditContactsMenu,
+    BackToEditContactsKeyboard,
     BackToUpdateContactKeyboard,
     EditContactsKeyboard,
     UpdateContactsKeyboard,
 )
 from loader import dp
 from models import UserContact
-from services.profile_funcs import get_contact_text
+from services.profile import get_contact_text
 from states.profile import UpdateContactFieldState
 
 
@@ -38,7 +38,7 @@ async def delete_contact(call: types.CallbackQuery) -> None:
     await UserContact.delete(contact_id)
     await call.message.edit_text(
         'Контакт удален',
-        reply_markup=BackToEditContactsMenu.keyboard,
+        reply_markup=BackToEditContactsKeyboard.keyboard,
     )
 
 

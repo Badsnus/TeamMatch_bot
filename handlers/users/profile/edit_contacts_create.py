@@ -3,7 +3,7 @@ from aiogram.dispatcher import FSMContext
 from sqlalchemy.exc import DataError
 
 from keyboards.inline.profile import (
-    BackToEditContactsMenu,
+    BackToEditContactsKeyboard,
     EditContactsKeyboard,
 )
 from loader import dp
@@ -15,7 +15,7 @@ from states.profile import CreateContactState
 async def start_create_contact(call: types.CallbackQuery) -> None:
     await call.message.edit_text(
         'Пришлите название контакта',
-        reply_markup=BackToEditContactsMenu.keyboard,
+        reply_markup=BackToEditContactsKeyboard.keyboard,
     )
     await CreateContactState.name.set()
 
@@ -25,7 +25,7 @@ async def get_name(message: types.Message, state: FSMContext) -> None:
     await state.update_data({CreateContactState.name_field_name: message.text})
     await message.answer(
         'Пришлите ссылку, на который этот контакт будет ввести',
-        reply_markup=BackToEditContactsMenu.keyboard,
+        reply_markup=BackToEditContactsKeyboard.keyboard,
     )
     await CreateContactState.link.set()
 
@@ -53,5 +53,5 @@ async def create_contact(message: types.Message, state: FSMContext,
 
     await message.answer(
         text,
-        reply_markup=BackToEditContactsMenu.keyboard,
+        reply_markup=BackToEditContactsKeyboard.keyboard,
     )
