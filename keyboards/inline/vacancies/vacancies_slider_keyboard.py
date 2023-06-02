@@ -12,8 +12,42 @@ class VacanciesSliderKeyboard:
     def generate_callback(current_callback: str, vacancy_id: int) -> str:
         return current_callback + str(vacancy_id)
 
+    @staticmethod
+    def _add_button(buttons: list[InlineKeyboardButton],
+                    statement: bool,
+                    button_text: str,
+                    button_callback: str,
+                    ) -> list[InlineKeyboardButton]:
+        if statement:
+            buttons.append(
+                InlineKeyboardButton(
+                    button_text,
+                    callback_data=button_callback,
+                ),
+            )
+        return buttons
+
     @classmethod
-    def get_keyboard(cls, vacancy: Vacancy) -> InlineKeyboardMarkup:
+    def get_keyboard(cls,
+                     vacancy: Vacancy,
+                     need_left: bool,
+                     need_right: bool,
+                     ) -> InlineKeyboardMarkup:
+        scroll_buttons = []
+
+        cls._add_button(
+            scroll_buttons,
+            need_left,
+            '🔙',
+            cls.generate_callback(cls.slider_left, vacancy.id),
+        )
+        cls._add_button(
+            scroll_buttons,
+            need_right,
+            '🔜',
+            cls.generate_callback(cls.slider_right, vacancy.id),
+        )
+
         keyboard = InlineKeyboardMarkup(inline_keyboard=[
             [
                 InlineKeyboardButton(
@@ -21,21 +55,6 @@ class VacanciesSliderKeyboard:
                     url=vacancy.url_for_response,
                 ),
             ],
-            [
-                InlineKeyboardButton(
-                    '🔙',
-                    callback_data=cls.generate_callback(
-                        cls.slider_left,
-                        vacancy.id,
-                    ),
-                ),
-                InlineKeyboardButton(
-                    '🔜',
-                    callback_data=cls.generate_callback(
-                        cls.slider_right,
-                        vacancy.id,
-                    ),
-                ),
-            ],
+            scroll_buttons,
         ])
         return keyboard

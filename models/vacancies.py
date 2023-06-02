@@ -46,14 +46,11 @@ class Vacancy(Base):
         return vacancy
 
     @staticmethod
-    async def get_object_by_filters(*filters) -> list[Vacancy]:
-        query = select(Vacancy)
+    async def get_queryset_by_filters(limit: int = 2,
+                                      *filters) -> list[Vacancy]:
+        queryset = select(Vacancy)
 
         for f in filters:
-            query = query.filter(f)
+            queryset = queryset.filter(f)
 
-        vacancy = await session.scalar(query.limit(1))
-        if not vacancy:
-            raise VacancyNotFound
-
-        return vacancy
+        return await session.scalars(queryset.limit(limit))
