@@ -2,7 +2,7 @@ from enum import Enum
 
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
-from keyboards.inline.projects import BACK_TO_PROJECTS
+from keyboards.inline.projects import BACK_TO_PROJECTS_CALL
 
 
 class CreateProjectKeyboard:
@@ -43,7 +43,7 @@ class CreateProjectKeyboard:
         [
             InlineKeyboardButton(
                 'Вернуться к проектам',
-                callback_data=BACK_TO_PROJECTS,
+                callback_data=BACK_TO_PROJECTS_CALL,
             ),
         ],
     ])

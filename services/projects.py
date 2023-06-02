@@ -1,3 +1,7 @@
+def get_projects_main_menu_text() -> str:
+    return 'Проекты'
+
+
 def get_field_symbol(field: str,
                      good_value: str = '✅',
                      bad_value: str = '❌') -> str:

@@ -1,1 +1,1 @@
-BACK_TO_PROJECTS = 'projects'
+BACK_TO_PROJECTS_CALL = 'projects'
