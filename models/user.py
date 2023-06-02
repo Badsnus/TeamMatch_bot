@@ -7,7 +7,7 @@ from sqlalchemy import orm
 from sqlalchemy.orm import selectinload
 
 from models.base_model import Base
-from models.exceptions import UserContactNotFound
+from models.exceptions import UserContactNotFound, UserSkillNotFound
 from loader import session
 
 
@@ -77,6 +77,9 @@ class User(Base):
         if commit:
             await session.commit()
 
+    async def refresh(self):
+        await session.refresh(self)
+
 
 # TODO ограничить число контактов
 class UserContact(Base):
@@ -129,6 +132,7 @@ class UserContact(Base):
         await session.commit()
 
 
+# TODO сюда тоже надо ограничение на количество
 class UserSkill(Base):
     __tablename__ = 'user_skill'
     id: orm.Mapped[int] = orm.mapped_column(primary_key=True)
@@ -150,3 +154,19 @@ class UserSkill(Base):
         await session.commit()
 
         return user_skills
+
+    @staticmethod
+    async def get(skill_id: int) -> UserSkill:
+        skill = await session.scalar(
+            select(UserSkill).where(UserSkill.id == skill_id),
+        )
+
+        if skill is None:
+            raise UserSkillNotFound
+
+        return skill
+
+    @staticmethod
+    async def delete(skill_id: int) -> None:
+        await session.delete(await UserSkill.get(skill_id))
+        await session.commit()

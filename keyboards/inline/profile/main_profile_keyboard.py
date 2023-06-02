@@ -1,11 +1,15 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
-from keyboards.inline.profile import BACK_TO_PROFILE_CALLBACK
+from keyboards.inline.profile import (
+    BACK_TO_PROFILE_CALLBACK,
+    CHANGE_SKILL_CALLBACK,
+)
 
 
 class ProfileKeyboard:
+    # TODO мб это все ваще в константы вынести
     change_name = 'profile_change_name'
-    change_skills = 'profile_change_skills'
+    change_skills = CHANGE_SKILL_CALLBACK
     change_contacts = 'profile_change_contacts'
     change_experience = 'profile_change_experience'
 

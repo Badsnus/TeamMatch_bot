@@ -1,1 +1,1 @@
-from .user_exceptions import UserContactNotFound
+from .user_exceptions import UserContactNotFound, UserSkillNotFound
