@@ -53,7 +53,7 @@ def get_fields_items(data: dict) -> dict[str, str]:
     ))
 
 
-def get_project_retrieve_text(project: Project) -> str:
+def get_employees_and_candidate_text(project):
     employees_text = '\n'.join(
         get_link_to_user(employee.user_id, employee.user.name) +
         f' - <code>{employee.role}</code>'
@@ -63,6 +63,12 @@ def get_project_retrieve_text(project: Project) -> str:
         f'<b>{index}. </b><code>{candidate.role}</code>'
         for index, candidate in enumerate(project.candidates, start=1)
     ) if project.candidates else '<code>Вакансий нет.</code>'
+
+    return employees_text, candidates_text
+
+
+def get_project_retrieve_text(project: Project) -> str:
+    employees_text, candidates_text = get_employees_and_candidate_text(project)
 
     return f'''
 {format_field_text('Название', project.name)}   
