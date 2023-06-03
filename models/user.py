@@ -56,6 +56,23 @@ class User(Base):
         'Employee',
         back_populates='user',
     )
+    invites_to_employee: orm.Mapped[list['InviteToEmployee']] = (
+        orm.relationship(
+            back_populates='user',
+            cascade='all, delete-orphan',
+        )
+    )
+
+    @staticmethod
+    async def get(user_id: int) -> User:
+        user = await session.scalar(
+            select(User).where(User.id == user_id).limit(1),
+        )
+
+        if user is None:
+            raise Exception  # TODO need exp
+
+        return user
 
     @staticmethod
     async def get_by_telegram_id(telegram_id: int) -> User | None:

@@ -39,6 +39,13 @@ class Project(Base):
         back_populates='project', cascade='all, delete-orphan',
     )
 
+    invites_to_employee: orm.Mapped[list['InviteToEmployee']] = (
+        orm.relationship(
+            back_populates='project',
+            cascade='all, delete-orphan',
+        )
+    )
+
     def check_valid(self):
         max_name_length = self.__table__.c.name.type.length
         StringValidator(max_length=max_name_length).is_valid(
@@ -179,6 +186,16 @@ class Employee(Base):
             raise Exception  # TODO ексепшен сюда
 
         return employee
+
+    @staticmethod
+    async def get_by_project_and_user_id(project_id: int,
+                                         user_id: int) -> Employee:
+        return await session.scalar(
+            select(Employee)
+            .where(Employee.project_id == project_id)
+            .where(Employee.user_id == user_id)
+            .limit(1),
+        )
 
     async def update(self, commit=True, **kwargs):
         for key, value in kwargs.items():

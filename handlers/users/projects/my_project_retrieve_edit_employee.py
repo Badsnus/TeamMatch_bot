@@ -14,8 +14,10 @@ from states.projects import UpdateRoleState
 
 
 @dp.callback_query_handler(
-    text_startswith=MyProjectRetrieveKeyboard.edit_emp_call)
+    text_startswith=MyProjectRetrieveKeyboard.edit_emp_call, state='*')
 async def show_emp_menu(call: types.CallbackQuery, state: FSMContext) -> None:
+    await state.finish()
+
     project_id = MyProjectRetrieveKeyboard.parse_project_id(call.data)
     await state.update_data(project_id=project_id)
 
