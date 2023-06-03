@@ -30,9 +30,11 @@ async def show_emp_menu(call: types.CallbackQuery, state: FSMContext) -> None:
 
 
 @dp.callback_query_handler(
-    text_startswith=ProjectEmployeesKeyboard.edit_employee_call)
+    text_startswith=ProjectEmployeesKeyboard.edit_employee_call, state='*')
 async def show_employee_retrieve_menu(call: types.CallbackQuery,
                                       state: FSMContext) -> None:
+    await state.reset_state(with_data=False)
+
     employee_id = ProjectEmployeesKeyboard.parse_employee_id(call.data)
     employee = await Employee.get(employee_id)
 
@@ -47,8 +49,14 @@ async def show_employee_retrieve_menu(call: types.CallbackQuery,
 
 
 @dp.callback_query_handler(text=ProjectEmployeeRetrieveKeyboard.edit_role_call)
-async def ask_new_role(call: types.CallbackQuery) -> None:
-    await call.message.edit_text('Введите новую роль')
+async def ask_new_role(call: types.CallbackQuery, state: FSMContext) -> None:
+    data = await state.get_data()
+    employee_id = data.get('employee_id')
+
+    await call.message.edit_text(
+        'Введите новую роль',
+        reply_markup=ProjectEmployeesKeyboard.get_back_keyboard(employee_id),
+    )
 
     await UpdateRoleState.role.set()
 
@@ -74,7 +82,7 @@ async def update_role(message: types.Message, state: FSMContext) -> None:
 async def delete_employee(call: types.CallbackQuery,
                           state: FSMContext) -> None:
     data = await state.get_data()
-    await state.finish()
+    await state.reset_state(with_data=False)
 
     employee_id = data.get('employee_id')
 

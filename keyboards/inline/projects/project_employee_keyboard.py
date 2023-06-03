@@ -36,3 +36,12 @@ class ProjectEmployeesKeyboard:
         ))
 
         return keyboard
+
+    @classmethod
+    def get_back_keyboard(cls, employee_id: int) -> InlineKeyboardMarkup:
+        return InlineKeyboardMarkup(inline_keyboard=[[
+            InlineKeyboardButton(
+                'Назад',
+                callback_data=cls.get_call_data(employee_id),
+            ),
+        ]])
