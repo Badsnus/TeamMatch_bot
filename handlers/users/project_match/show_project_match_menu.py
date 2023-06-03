@@ -25,3 +25,16 @@ async def show_project_match_menu(call: types.CallbackQuery,
         reply_markup=MatchKeyboard.get_keyboard(project_id),
     )
     await try_delete_message(call.message)
+
+
+@dp.callback_query_handler(text_startswith=MatchKeyboard.give_info_call)
+async def match_project(call: types.CallbackQuery, user: User) -> None:
+    project_id = MatchKeyboard.parse_project_id(call.data)
+    project = await Project.get(project_id, do_join=True)
+
+    await ProjectMatched(project_id=project_id, user_id=user.id).save()
+
+    await call.message.edit_text(
+        '<b>Оставляю тебе этот проект на память</b> #project' +
+        get_project_profile_text(project),
+    )
