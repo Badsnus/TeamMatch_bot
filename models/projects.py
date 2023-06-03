@@ -238,3 +238,10 @@ class Candidate(Base):
             raise Exception  # TODO ексепшен сюда
 
         return candidate
+
+    async def update(self, commit=True, **kwargs):
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+        if commit:
+            await session.commit()

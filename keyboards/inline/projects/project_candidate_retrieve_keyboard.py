@@ -1,12 +1,23 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 from keyboards.inline.projects import MyProjectRetrieveKeyboard
+from models import Candidate
 
 
 class ProjectCandidateRetrieveKeyboard:
-    edit_role_call = 'project_candidate_retrieve_edit_role'
-    edit_desc_call = 'project_candidate_retrieve_edit_desc'
+    text_for_fields = {
+        Candidate.role.key: 'Введите новую роль',
+        Candidate.description.key: 'Введите новое описание',
+    }
+
+    edit_prefix = 'project_candidate_retrieve_edit_'
+    edit_role_call = edit_prefix + Candidate.role.key
+    edit_desc_call = edit_prefix + Candidate.description.key
     delete_call = 'project_candidate_retrieve_delete'
+
+    @classmethod
+    def parse_field_name(cls, callback_data: str) -> str:
+        return callback_data.replace(cls.edit_prefix, '')
 
     @classmethod
     def get_keyboard(cls, project_id: int) -> InlineKeyboardMarkup:
@@ -18,7 +29,7 @@ class ProjectCandidateRetrieveKeyboard:
                 ),
                 InlineKeyboardButton(
                     text='Редактировать описание',
-                    callback_data=cls.edit_role_call
+                    callback_data=cls.edit_desc_call
                 ),
             ],
             [
