@@ -16,7 +16,7 @@ async def show_projects_menu(message: types.Message,
     await state.finish()  # DONT TOUCH IT
     await message.answer(
         get_projects_main_menu_text(),
-        reply_markup=ProjectsKeyboard.keyboard,
+        reply_markup=ProjectsKeyboard.get_keyboard(),
     )
 
 
@@ -27,5 +27,5 @@ async def show_projects_menu(call: types.CallbackQuery,
 
     await call.message.edit_text(
         get_projects_main_menu_text(),
-        reply_markup=ProjectsKeyboard.keyboard,
+        reply_markup=ProjectsKeyboard.get_keyboard(),
     )
