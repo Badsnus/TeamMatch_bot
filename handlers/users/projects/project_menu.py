@@ -11,7 +11,9 @@ from services.projects import get_projects_main_menu_text
 
 
 @dp.message_handler(text=MainKeyboard.projects)
-async def show_projects_menu(message: types.Message) -> None:
+async def show_projects_menu(message: types.Message,
+                             state: FSMContext) -> None:
+    await state.finish()  # DONT TOUCH IT
     await message.answer(
         get_projects_main_menu_text(),
         reply_markup=ProjectsKeyboard.keyboard,

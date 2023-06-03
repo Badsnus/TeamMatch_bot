@@ -13,6 +13,11 @@ class MyProjectRetrieveKeyboard:
     leave_call = 'projects_my_leave-'
 
     @classmethod
+    def parse_project_id(cls, call_data: str) -> int:
+        _, project_id = call_data.split('-')
+        return int(project_id)
+
+    @classmethod
     def generate_call_data(cls, prefix: str, project_id: int) -> str:
         return f'{prefix}{project_id}'
 

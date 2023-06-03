@@ -11,3 +11,5 @@ class CreateProjectState(StatesGroup):
 class CrPrEnum(Enum):
     message_id = 'message_id'
     update_field = 'update_field'
+    project_id = 'project_id'
+    create = 'create'

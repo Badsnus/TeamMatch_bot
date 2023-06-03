@@ -120,6 +120,13 @@ class Project(Base):
 
         return projects.all()
 
+    async def update(self, commit=True, **kwargs):
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+        if commit:
+            await session.commit()
+
 
 class Employee(Base):
     __tablename__ = 'employee'

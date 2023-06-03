@@ -7,3 +7,4 @@ from .main_projects_keyboards import (
 )
 from .my_projects_keyboard import MyProjectsKeyboard
 from .my_project_retrieve_keyboard import MyProjectRetrieveKeyboard
+from .my_project_edit_settings_keyboard import MyProjectEditSettingsKeyboard

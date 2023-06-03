@@ -5,6 +5,7 @@ from keyboards.inline.projects import (
     BackToCreateProjectKeyboard,
     BackToMainProjectsKeyboard,
     CreateProjectKeyboard,
+    MyProjectEditSettingsKeyboard,
     ProjectsKeyboard,
 )
 from models import Project, User
@@ -19,18 +20,27 @@ from states.projects import CreateProjectState, CrPrEnum
 from utils.delete_message import try_delete_message
 
 
-@dp.callback_query_handler(text=ProjectsKeyboard.create_project_call, state='*')
+@dp.callback_query_handler(text=ProjectsKeyboard.create_project_call,
+                           state='*')
 async def show_project_create_menu(call: types.CallbackQuery,
                                    state: FSMContext) -> None:
+    # TODO а вот и эти мега костыли
     await state.reset_state(with_data=False)
-    await state.update_data({
-        CrPrEnum.message_id.value: call.message.message_id,
-    })
     data = await state.get_data()
+    data.update({CrPrEnum.message_id.value: call.message.message_id})
+    if CrPrEnum.create.value not in data:
+        data.update({CrPrEnum.create.value: True})
+
+    await state.update_data(data)
+
+    keyboard_class = (
+        CreateProjectKeyboard if data[CrPrEnum.create.value]
+        else MyProjectEditSettingsKeyboard
+    )
 
     await call.message.edit_text(
         text=get_create_project_text(*get_fields_values(data)),
-        reply_markup=CreateProjectKeyboard.keyboard,
+        reply_markup=keyboard_class.get_keyboard(),
     )
 
 
@@ -54,11 +64,16 @@ async def delete_message_and_send_update_menu(
         message: types.Message) -> None:
     await try_delete_message(message)
 
+    keyboard_class = (
+        CreateProjectKeyboard if data[CrPrEnum.create.value]
+        else MyProjectEditSettingsKeyboard
+    )
+
     await bot.edit_message_text(
         chat_id=message.from_user.id,
         message_id=data.get(CrPrEnum.message_id.value),
         text=get_create_project_text(*get_fields_values(data)),
-        reply_markup=CreateProjectKeyboard.keyboard,
+        reply_markup=keyboard_class.get_keyboard(),
     )
 
 
@@ -106,6 +121,8 @@ async def create_project(call: types.CallbackQuery,
     try:
         project = Project(**data)
         await project.create_project_with_owner(user)
+
+        await state.finish()
 
     except ValidationError as ex:
         await call.answer(ex.message)
