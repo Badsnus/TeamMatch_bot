@@ -10,7 +10,7 @@ class ProjectsKeyboard:
     match_project_call = 'projects_match'
 
     @classmethod
-    def get_keyboard(cls) -> InlineKeyboardMarkup():
+    def get_keyboard(cls, notice_count: int) -> InlineKeyboardMarkup:
         return InlineKeyboardMarkup(inline_keyboard=[
             [
                 InlineKeyboardButton(
@@ -24,7 +24,7 @@ class ProjectsKeyboard:
             ],
             [
                 InlineKeyboardButton(
-                    'Уведомления',
+                    f'Уведомления ({notice_count})',
                     callback_data=cls.project_notice_call
                 ),
             ],

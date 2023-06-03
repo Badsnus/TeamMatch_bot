@@ -1,6 +1,8 @@
 import asyncio
+from typing import Any, Tuple
 
-from sqlalchemy import Boolean, delete, ForeignKey, orm, select, String
+from sqlalchemy import ForeignKey, orm, select
+from sqlalchemy.sql.functions import count
 
 from loader import session
 from models.base_model import Base
@@ -39,3 +41,15 @@ class InviteToEmployee(Base):
                     user_id=self.user_id,
                 ),
             )
+
+    @staticmethod
+    async def get_notice_by_user(user_id: int) -> list['InviteToEmployee']:
+        return await session.scalars(
+            select(InviteToEmployee).where(InviteToEmployee.user_id == user_id)
+        )
+
+    @classmethod
+    async def get_notice_count_by_user(cls, user_id: int) -> int:
+        return await session.scalar(
+            select(count()).where(InviteToEmployee.user_id == user_id)
+        )
