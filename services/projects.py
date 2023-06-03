@@ -70,5 +70,5 @@ def get_project_retrieve_text(project: Project) -> str:
                    get_field_symbol(project.show_for_matching))}
                    
 <b>Сотрудники:</b>\n{employees_text}\n
-<b>Нужны сотрудники:</b>\n{candidates_text}\n
+<b>Текущие вакансии:</b>\n{candidates_text}\n
     '''

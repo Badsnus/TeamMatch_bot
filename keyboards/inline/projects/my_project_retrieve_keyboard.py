@@ -5,8 +5,12 @@ from models import Project
 
 
 class MyProjectRetrieveKeyboard:
-    edit_call_prefix = 'projects_my_edit-'
-    leave_call_prefix = 'projects_my_leave-'
+    edit_emp_call = 'projects_my_edit_employees-'
+    edit_cand_call = 'projects_my_edit_candidates-'
+    edit_set_call = 'projects_my_edit_settings-'
+    delete_project_call = 'projects_my_delete'
+
+    leave_call = 'projects_my_leave-'
 
     @classmethod
     def generate_call_data(cls, prefix: str, project_id: int) -> str:
@@ -14,7 +18,42 @@ class MyProjectRetrieveKeyboard:
 
     @classmethod
     def get_owner_keyboard(cls, project: Project) -> InlineKeyboardMarkup:
-        keyboard = InlineKeyboardMarkup()
+        keyboard = InlineKeyboardMarkup(inline_keyboard=[
+            [
+                InlineKeyboardButton(
+                    'Изменить основные настройки',
+                    callback_data=cls.generate_call_data(
+                        cls.edit_set_call,
+                        project.id,
+                    ),
+                ),
+            ],
+            [
+                InlineKeyboardButton(
+                    'Изменить сотрудников',
+                    callback_data=cls.generate_call_data(
+                        cls.edit_emp_call,
+                        project.id,
+                    ),
+                ),
+                InlineKeyboardButton(
+                    'Изменить вакансии',
+                    callback_data=cls.generate_call_data(
+                        cls.edit_cand_call,
+                        project.id,
+                    ),
+                ),
+            ],
+            [
+                InlineKeyboardButton(
+                    'Удалить проект',
+                    callback_data=cls.generate_call_data(
+                        cls.delete_project_call,
+                        project.id,
+                    ),
+                ),
+            ],
+        ])
         return keyboard
 
     @classmethod
@@ -24,7 +63,7 @@ class MyProjectRetrieveKeyboard:
                 InlineKeyboardButton(
                     'Выйти из проекта',
                     callback_data=cls.generate_call_data(
-                        cls.leave_call_prefix,
+                        cls.leave_call,
                         project.id,
                     ),
                 ),
