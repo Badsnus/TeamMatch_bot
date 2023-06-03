@@ -4,7 +4,7 @@ from aiogram.dispatcher import FSMContext
 from keyboards.default.main_keyboard import MainKeyboard
 from keyboards.inline.projects import (
     BACK_TO_PROJECTS_CALL,
-    ProjectKeyboard,
+    ProjectsKeyboard,
 )
 from loader import dp
 from services.projects import get_projects_main_menu_text
@@ -14,7 +14,7 @@ from services.projects import get_projects_main_menu_text
 async def show_projects_menu(message: types.Message) -> None:
     await message.answer(
         get_projects_main_menu_text(),
-        reply_markup=ProjectKeyboard.keyboard,
+        reply_markup=ProjectsKeyboard.keyboard,
     )
 
 
@@ -25,5 +25,5 @@ async def show_projects_menu(call: types.CallbackQuery,
 
     await call.message.edit_text(
         get_projects_main_menu_text(),
-        reply_markup=ProjectKeyboard.keyboard,
+        reply_markup=ProjectsKeyboard.keyboard,
     )

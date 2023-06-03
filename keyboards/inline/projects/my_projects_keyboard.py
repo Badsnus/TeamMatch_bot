@@ -4,12 +4,16 @@ from keyboards.inline.projects import BACK_TO_PROJECTS_CALL
 from models import Project
 
 
-class MyProjectKeyboard:
-    project_call_prefix = 'projects_my-'
+class MyProjectsKeyboard:
+    call_prefix = 'projects_my_retrieve-'
+
+    @classmethod
+    def parse_project_id(cls, call_data: str) -> int:
+        return int(call_data.replace(cls.call_prefix, ''))
 
     @classmethod
     def generate_call_data(cls, project_id: int) -> str:
-        return f'{cls.project_call_prefix}{project_id}'
+        return f'{cls.call_prefix}{project_id}'
 
     @classmethod
     def get_keyboard(cls, projects: list[Project]) -> InlineKeyboardMarkup:

@@ -9,3 +9,5 @@ DB_PATH = 'sqlite+aiosqlite:///' + env.str('DB_NAME')
 
 # TODO это вынести в доп таблу
 RULES_URL = env.str('RULES_URL')
+BOT_URL = env.str('BOT_URL')
+BOT_URL_FOR_REF = BOT_URL + '?start='

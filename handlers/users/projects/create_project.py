@@ -5,7 +5,7 @@ from keyboards.inline.projects import (
     BackToCreateProjectKeyboard,
     BackToMainProjectsKeyboard,
     CreateProjectKeyboard,
-    ProjectKeyboard,
+    ProjectsKeyboard,
 )
 from models import Project, User
 from models.exceptions import ValidationError
@@ -19,7 +19,7 @@ from states.projects import CreateProjectState, CrPrEnum
 from utils.delete_message import try_delete_message
 
 
-@dp.callback_query_handler(text=ProjectKeyboard.create_project_call, state='*')
+@dp.callback_query_handler(text=ProjectsKeyboard.create_project_call, state='*')
 async def show_project_create_menu(call: types.CallbackQuery,
                                    state: FSMContext) -> None:
     await state.reset_state(with_data=False)

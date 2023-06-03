@@ -52,6 +52,10 @@ class User(Base):
     projects: orm.Mapped[list['Project']] = orm.relationship(
         secondary='employee', back_populates='users',
     )
+    employees: orm.Mapped[list['Employee']] = orm.relationship(
+        'Employee',
+        back_populates='user',
+    )
 
     @staticmethod
     async def get_by_telegram_id(telegram_id: int) -> User | None:

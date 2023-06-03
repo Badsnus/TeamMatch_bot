@@ -28,6 +28,10 @@ class Project(Base):
         default=False,
     )
 
+    employees: orm.Mapped[list['Employee']] = orm.relationship(
+        back_populates='project', cascade='all, delete-orphan',
+    )
+
     users: orm.Mapped[list[User]] = orm.relationship(
         secondary='employee', back_populates='projects',
     )
@@ -80,9 +84,25 @@ class Project(Base):
         return self
 
     @staticmethod
-    async def get(project_id: int) -> Project:
+    def get_join_project_query(project_id):
+        return (
+            select(Project)
+            .join(Employee).where(Employee.project_id == project_id)
+            .outerjoin(Candidate, (Candidate.project_id == project_id))
+            .options(orm.selectinload(Project.candidates))
+            .options(orm.selectinload(Project.employees).selectinload(
+                Employee.user))
+        )
+
+    # TODO какие-то флаги => мб это переделать надо
+    @classmethod
+    async def get(cls, project_id: int, do_join=False) -> Project:
+        query = select(Project)
+        if do_join:
+            query = cls.get_join_project_query(project_id)
+
         project = await session.scalar(
-            select(Project).where(Project.id == project_id).limit(1),
+            query.where(Project.id == project_id).limit(1),
         )
 
         if project is None:
@@ -110,13 +130,33 @@ class Employee(Base):
     is_owner: orm.Mapped[bool] = orm.mapped_column(Boolean(), default=False)
 
     project_id: orm.Mapped[int] = orm.mapped_column(ForeignKey('project.id'))
+    project: orm.Mapped[Project] = orm.relationship(
+        back_populates='employees',
+    )
+
     user_id: orm.Mapped[int] = orm.mapped_column(ForeignKey('user.id'))
+    user: orm.Mapped[User] = orm.relationship(
+        back_populates='employees',
+    )
 
     async def save(self, commit=True) -> None:
         session.add(self)
 
         if commit:
             await session.commit()
+
+    @staticmethod
+    async def check_user_is_owner(project_id, user_id) -> bool:
+        item: Employee = await session.scalar(
+            select(Employee)
+            .where(Employee.project_id == project_id)
+            .where(Employee.user_id == user_id),
+        )
+
+        if not item:
+            return False
+
+        return item.is_owner
 
 
 class Candidate(Base):

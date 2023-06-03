@@ -3,6 +3,7 @@ from .create_project_keyboard import CreateProjectKeyboard
 from .main_projects_keyboards import (
     BackToCreateProjectKeyboard,
     BackToMainProjectsKeyboard,
-    ProjectKeyboard,
+    ProjectsKeyboard,
 )
-from .my_projects_keyboard import MyProjectKeyboard
+from .my_projects_keyboard import MyProjectsKeyboard
+from .my_project_retrieve_keyboard import MyProjectRetrieveKeyboard
