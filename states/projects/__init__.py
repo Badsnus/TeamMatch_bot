@@ -1,3 +1,4 @@
+from .add_candidate import AddCandidateState
 from .add_employee import AddEmployeeState
 from .create_project import CreateProjectState, CrPrEnum
 from .update_candidate_data import UpdateCandidateDataState

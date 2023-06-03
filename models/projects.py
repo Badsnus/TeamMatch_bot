@@ -226,6 +226,12 @@ class Candidate(Base):
         back_populates='candidates',
     )
 
+    async def save(self, commit=True) -> None:
+        session.add(self)
+
+        if commit:
+            await session.commit()
+
     @classmethod
     async def get(cls, candidate_id: int) -> Candidate:
         candidate = await session.scalar(

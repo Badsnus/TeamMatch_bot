@@ -59,8 +59,8 @@ def get_project_retrieve_text(project: Project) -> str:
         f' - <code>{employee.role}</code>'
         for employee in project.employees
     )
-    candidates_text = '\n.'.join(
-        f'<b>{index}.</b><code>{candidate.role}</code>'
+    candidates_text = '\n'.join(
+        f'<b>{index}. </b><code>{candidate.role}</code>'
         for index, candidate in enumerate(project.candidates, start=1)
     ) if project.candidates else '<code>Вакансий нет.</code>'
 

@@ -1,6 +1,7 @@
 from . import create_project
 from . import my_projects
 from . import my_project_retrieve
+from . import my_project_retrieve_add_candidate
 from . import my_project_retrieve_add_employee
 from . import my_project_retrieve_candidates
 from . import my_project_retrieve_edit_employee
