@@ -31,7 +31,7 @@ def get_profile_text(user: User) -> str:
     date_of_reg = user.registration_time.date()
 
     return f'''
-<b>Профиль</b> | ID: <code>{user.telegram_id}</code>
+<b>Профиль</b> | ID: <code>{user.id}</code>
 
 Имя: <b>{user.name}</b>
 Юзернейм: <b>{format_username(user.telegram_username)}</b>
