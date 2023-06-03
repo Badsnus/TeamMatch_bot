@@ -1,0 +1,20 @@
+вынести ласт активии в отдельную таблу (лучше ваще в какой-то редис)
+отлавливать usernotfound
+
+        # for key, value in kwargs.items():
+        #     query = query.filter(getattr(UserContact, key) == value)
+
+отлавливать ошибку того, что нельзя редачить сообщение
+убрать куча дубляжа кода в keyboards
+подумать про удаление кнопок с сообщений (мидл варя)
+мидл варя, которая будет ловить меседж кент би едитед
+удаление сообщение при создании проекта (когда надо кинуть фото, а чел кидает текст)
+memorystorage -> redis
+readme + env.example
+просто сделать отлавливатель ошибок, который будет говорить - сорян но чет не работает
+хендлер спасения
+
+data_dlya_vac (TOLKO DLYA MOEGO BOTA WORK):
+1,Yandex,стажировка лорем ипсум,AgACAgIAAxkBAAIJ-mR7dAZ5Nzyv9vhatEE9xrBnEhKlAAJNyzEbO37hS0ArJP6ZAAFtuAEAAwIAA3gAAy8E,ya.ru
+2,Google,goooooooooooooooo,AgACAgIAAxkBAAIJ-2R7dD3xG38mL2Dge4wbl84uYC4FAAJOyzEbO37hS3o_yYKsIcFlAQADAgADeAADLwQ,google.com
+3,TeamMatch,лучшая компания,AgACAgIAAxkBAAIJ_GR7dHkBEQ5r6eZtI4V3geKS68FvAAJUyzEbO37hSz8fBmVUsZfiAQADAgADeAADLwQ,a.ru

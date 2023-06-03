@@ -82,7 +82,13 @@ class User(Base):
             .where(User.id == user_id)
             .join(Employee, Employee.user_id == user_id)
             .join(Project, Employee.project_id == Project.id)
+            .join(UserContact)
+            .join(UserSkill)
+            .join(UserExperience)
             .options(orm.selectinload(User.projects))
+            .options(orm.selectinload(User.contacts))
+            .options(orm.selectinload(User.skills))
+            .options(orm.selectinload(User.experience))
             .limit(1),
         )
 
