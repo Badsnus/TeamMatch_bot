@@ -13,6 +13,7 @@ memorystorage -> redis
 readme + env.example
 просто сделать отлавливатель ошибок, который будет говорить - сорян но чет не работает
 хендлер спасения
+еще бы линтер подрубить...
 
 data_dlya_vac (TOLKO DLYA MOEGO BOTA WORK):
 1,Yandex,стажировка лорем ипсум,AgACAgIAAxkBAAIJ-mR7dAZ5Nzyv9vhatEE9xrBnEhKlAAJNyzEbO37hS0ArJP6ZAAFtuAEAAwIAA3gAAy8E,ya.ru
