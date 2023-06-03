@@ -1,10 +1,32 @@
+from enum import Enum
+
 from data.config import BOT_URL_FOR_REF
 from keyboards.inline.projects import CreateProjectKeyboard
 from models import Candidate, Employee, Project
 
 
+class ArgsFields(Enum):
+    user = 'user'
+    project = 'project'
+
+
 def get_link_to_user(id: int, text: str) -> str:
-    return f'<a href="{BOT_URL_FOR_REF}{id}">{text}</a>'
+    return (f'<a href="{BOT_URL_FOR_REF}'
+            f'-{ArgsFields.user.value}-{id}">{text}</a>'
+            )
+
+
+def get_link_to_project(id: int, text: str) -> str:
+    return (f'<a href="{BOT_URL_FOR_REF}'
+            f'-{ArgsFields.project.value}-{id}">{text}</a>'
+            )
+
+
+def parse_args(args: str) -> tuple[str, int]:
+    _, name, id = args.split('-')
+    assert name in (ArgsFields.user.value, ArgsFields.project.value)
+
+    return name, int(id)
 
 
 def get_projects_main_menu_text() -> str:

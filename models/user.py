@@ -74,6 +74,24 @@ class User(Base):
         return user
 
     @staticmethod
+    async def get_user_with_projects(user_id: int) -> User:
+        from models import Employee, Project  # circ import
+
+        user = await session.scalar(
+            select(User)
+            .where(User.id == user_id)
+            .join(Employee, Employee.user_id == user_id)
+            .join(Project, Employee.project_id == Project.id)
+            .options(orm.selectinload(User.projects))
+            .limit(1),
+        )
+
+        if user is None:
+            raise Exception  # TODO need exp
+
+        return user
+
+    @staticmethod
     async def get_by_telegram_id(telegram_id: int) -> User | None:
         # TODO оптимизация запросов
         return await session.scalar(

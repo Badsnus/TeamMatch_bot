@@ -1,3 +1,4 @@
+from . import show_profile_by_start
 from . import start
 from . import register
 from . import profile
