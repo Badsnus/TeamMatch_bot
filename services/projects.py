@@ -1,6 +1,10 @@
 from data.config import BOT_URL_FOR_REF
 from keyboards.inline.projects import CreateProjectKeyboard
-from models import Project
+from models import Employee, Project
+
+
+def get_link_to_user(id: int, text: str) -> str:
+    return f'<a href="{BOT_URL_FOR_REF}{id}">{text}</a>'
 
 
 def get_projects_main_menu_text() -> str:
@@ -51,8 +55,8 @@ def get_fields_items(data: dict) -> dict[str, str]:
 
 def get_project_retrieve_text(project: Project) -> str:
     employees_text = '\n'.join(
-        f'<a href="{BOT_URL_FOR_REF}{employee.user_id}">'
-        f'{employee.user.name}</a> - <code>{employee.role}</code>'
+        get_link_to_user(employee.user_id, employee.user.name) +
+        f' - <code>{employee.role}</code>'
         for employee in project.employees
     )
     candidates_text = '\n.'.join(
@@ -71,4 +75,13 @@ def get_project_retrieve_text(project: Project) -> str:
                    
 <b>Сотрудники:</b>\n{employees_text}\n
 <b>Текущие вакансии:</b>\n{candidates_text}\n
+    '''
+
+
+def get_employee_text(employee: Employee) -> str:
+    return f'''
+<b>Имя:</b> <code>{employee.user.name}</code>
+<b>Ссылка:</b> {get_link_to_user(employee.user_id, employee.user.name)}
+
+<b>Роль:</b> <code>{employee.role}</code>
     '''

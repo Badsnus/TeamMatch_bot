@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from sqlalchemy import Boolean, ForeignKey, orm, select, String
+from sqlalchemy import Boolean, delete, ForeignKey, orm, select, String
 
 from loader import session
 from models import User
@@ -164,6 +164,36 @@ class Employee(Base):
             return False
 
         return item.is_owner
+
+    @classmethod
+    async def get(cls, employee_id: int) -> Employee:
+        employee = await session.scalar(
+            select(Employee)
+            .join(User, (User.id == Employee.user_id))
+            .options(orm.selectinload(Employee.user))
+            .where(Employee.id == employee_id)
+            .limit(1),
+        )
+
+        if employee is None:
+            raise Exception  # TODO ексепшен сюда
+
+        return employee
+
+    async def update(self, commit=True, **kwargs):
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+        if commit:
+            await session.commit()
+
+    @staticmethod
+    async def delete_by_id(employee_id: int) -> None:
+        await session.execute(
+            delete(Employee)
+            .where(Employee.id == employee_id),
+        )
+        await session.commit()
 
 
 class Candidate(Base):
