@@ -5,3 +5,4 @@ from .main_projects_keyboards import (
     BackToMainProjectsKeyboard,
     ProjectKeyboard,
 )
+from .my_projects_keyboard import MyProjectKeyboard

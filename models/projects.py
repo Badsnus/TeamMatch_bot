@@ -57,17 +57,6 @@ class Project(Base):
             min_length=0,
         ).is_valid(self.project_url)
 
-    @staticmethod
-    async def get(project_id: int) -> Project:
-        project = await session.scalar(
-            select(Project).where(Project.id == project_id).limit(1),
-        )
-
-        if project is None:
-            raise ProjectNotFound
-
-        return project
-
     async def save(self, commit=True) -> None:
         self.check_valid()
 
@@ -80,10 +69,36 @@ class Project(Base):
         # TODO тут бы конечно транзакцию надо
         await self.save()
 
-        employee = Employee(project_id=self.id, user_id=owner.id)
+        employee = Employee(
+            is_owner=True,
+            project_id=self.id,
+            user_id=owner.id,
+        )
+
         await employee.save()
 
         return self
+
+    @staticmethod
+    async def get(project_id: int) -> Project:
+        project = await session.scalar(
+            select(Project).where(Project.id == project_id).limit(1),
+        )
+
+        if project is None:
+            raise ProjectNotFound
+
+        return project
+
+    @staticmethod
+    async def get_projects_by_user(user_id: int) -> list[Project]:
+        projects = await session.scalars(
+            select(Project)
+            .join(Employee)
+            .where(Employee.user_id == user_id),
+        )
+
+        return projects.all()
 
 
 class Employee(Base):
@@ -92,6 +107,7 @@ class Employee(Base):
     id: orm.Mapped[int] = orm.mapped_column(primary_key=True)
 
     role: orm.Mapped[str] = orm.mapped_column(String(30), default='CEO')
+    is_owner: orm.Mapped[bool] = orm.mapped_column(Boolean(), default=False)
 
     project_id: orm.Mapped[int] = orm.mapped_column(ForeignKey('project.id'))
     user_id: orm.Mapped[int] = orm.mapped_column(ForeignKey('user.id'))
