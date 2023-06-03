@@ -245,3 +245,11 @@ class Candidate(Base):
 
         if commit:
             await session.commit()
+
+    @staticmethod
+    async def delete_by_id(candidate_id: int) -> None:
+        await session.execute(
+            delete(Candidate)
+            .where(Candidate.id == candidate_id),
+        )
+        await session.commit()

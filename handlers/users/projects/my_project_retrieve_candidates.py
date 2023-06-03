@@ -88,3 +88,22 @@ async def update_role(message: types.Message, state: FSMContext) -> None:
             candidate.project_id,
         ),
     )
+
+
+@dp.callback_query_handler(text=ProjectCandidateRetrieveKeyboard.delete_call)
+async def delete_employee(call: types.CallbackQuery,
+                          state: FSMContext) -> None:
+    data = await state.get_data()
+    await state.reset_state(with_data=False)
+
+    candidate_id = data.get('candidate_id')
+
+    await Candidate.delete_by_id(candidate_id)
+
+    call.data = MyProjectRetrieveKeyboard.generate_call_data(
+        prefix=MyProjectRetrieveKeyboard.edit_emp_call,
+        project_id=data.get('project_id'),
+    )
+
+    await call.answer('Вакансия удалена')
+    await show_candidates_menu(call, state)
