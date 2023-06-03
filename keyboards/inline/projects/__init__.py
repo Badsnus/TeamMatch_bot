@@ -16,3 +16,4 @@ from .project_candidate_retrieve_keyboard import (
 )
 from .project_employee_keyboard import ProjectEmployeesKeyboard
 from .project_employee_retrieve_keyboard import ProjectEmployeeRetrieveKeyboard
+from .project_notice_keyboard import ProjectNoticeKeyboard

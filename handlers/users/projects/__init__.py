@@ -10,3 +10,4 @@ from . import my_project_retrieve_edit_settings
 from . import my_projects_retrieve_leave
 from . import my_project_retrieve_toggle_match
 from . import project_menu
+from . import project_notice

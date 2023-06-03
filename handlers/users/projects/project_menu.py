@@ -7,7 +7,7 @@ from keyboards.inline.projects import (
     ProjectsKeyboard,
 )
 from loader import dp
-from models import InviteToEmployee, User
+from models import Project, User
 from services.projects import get_projects_main_menu_text
 
 
@@ -16,8 +16,8 @@ async def show_projects_menu(message: types.Message,
                              state: FSMContext,
                              user: User) -> None:
     await state.finish()  # DONT TOUCH IT
-
-    notice_count = await InviteToEmployee.get_notice_count_by_user(user.id)
+    # sqlite krivaya, poetomu tak
+    notice_count = len(await Project.get_invited_projects(user.id))
 
     await message.answer(
         get_projects_main_menu_text(),
@@ -31,7 +31,7 @@ async def show_projects_menu(call: types.CallbackQuery,
                              user: User) -> None:
     await state.finish()
 
-    notice_count = await InviteToEmployee.get_notice_count_by_user(user.id)
+    notice_count = len(await Project.get_invited_projects(user.id))
 
     await call.message.edit_text(
         get_projects_main_menu_text(),

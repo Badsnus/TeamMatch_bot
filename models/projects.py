@@ -3,7 +3,7 @@ from __future__ import annotations
 from sqlalchemy import Boolean, delete, ForeignKey, orm, select, String
 
 from loader import session
-from models import User
+from models import InviteToEmployee, User
 from models.base_model import Base
 from models.exceptions import ProjectNotFound
 from models.validators import StringValidator
@@ -123,6 +123,16 @@ class Project(Base):
             select(Project)
             .join(Employee)
             .where(Employee.user_id == user_id),
+        )
+
+        return projects.all()
+
+    @staticmethod
+    async def get_invited_projects(user_id: int) -> list[Project]:
+        projects = await session.scalars(
+            select(Project)
+            .join(InviteToEmployee)
+            .where(InviteToEmployee.user_id == user_id),
         )
 
         return projects.all()

@@ -1,5 +1,4 @@
 import asyncio
-from typing import Any, Tuple
 
 from sqlalchemy import ForeignKey, orm, select
 from sqlalchemy.sql.functions import count
@@ -13,7 +12,7 @@ class InviteToEmployee(Base):
     __tablename__ = 'invite_to_employee'
 
     project_id: orm.Mapped[int] = orm.mapped_column(
-        ForeignKey('project.id'),
+        ForeignKey('project.id', ondelete='CASCADE'),
         primary_key=True,
     )
     project: orm.Mapped['Project'] = orm.relationship(
@@ -21,7 +20,7 @@ class InviteToEmployee(Base):
     )
 
     user_id: orm.Mapped[int] = orm.mapped_column(
-        ForeignKey('user.id'),
+        ForeignKey('user.id', ondelete='CASCADE'),
         primary_key=True,
     )
     user: orm.Mapped['User'] = orm.relationship(
