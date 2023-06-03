@@ -8,6 +8,7 @@ class MyProjectRetrieveKeyboard:
     edit_emp_call = 'projects_my_edit_employees-'
     edit_cand_call = 'projects_my_edit_candidates-'
     edit_set_call = 'projects_my_edit_settings-'
+    edit_match_call = 'projects_my_edit_match-'
     delete_project_call = 'projects_my_delete'
 
     leave_call = 'projects_my_leave-'
@@ -23,12 +24,25 @@ class MyProjectRetrieveKeyboard:
 
     @classmethod
     def get_owner_keyboard(cls, project: Project) -> InlineKeyboardMarkup:
+        show_match_text = (
+            'Закончить показывать в метчинге' if project.show_for_matching
+            else 'Начать показывать в метчинге'
+        )
         keyboard = InlineKeyboardMarkup(inline_keyboard=[
             [
                 InlineKeyboardButton(
                     'Изменить основные настройки',
                     callback_data=cls.generate_call_data(
                         cls.edit_set_call,
+                        project.id,
+                    ),
+                ),
+            ],
+            [
+                InlineKeyboardButton(
+                    show_match_text,
+                    callback_data=cls.generate_call_data(
+                        cls.edit_match_call,
                         project.id,
                     ),
                 ),
@@ -51,7 +65,7 @@ class MyProjectRetrieveKeyboard:
             ],
             [
                 InlineKeyboardButton(
-                    'Удалить проект',
+                    'Удалить проект ❌',
                     callback_data=cls.generate_call_data(
                         cls.delete_project_call,
                         project.id,

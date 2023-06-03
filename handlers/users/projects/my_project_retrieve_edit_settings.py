@@ -1,8 +1,9 @@
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 
-from handlers.users.projects.my_project_retrieve import \
-    show_project_retrieve_menu
+from handlers.users.projects.my_project_retrieve import (
+    show_project_retrieve_menu,
+)
 from keyboards.inline.projects import (
     MyProjectEditSettingsKeyboard,
     MyProjectsKeyboard,
@@ -11,8 +12,11 @@ from keyboards.inline.projects import (
 from loader import dp
 from models import Project, User
 from models.exceptions import ValidationError
-from services.projects import get_create_project_text, get_fields_values, \
-    get_fields_items
+from services.projects import (
+    get_create_project_text,
+    get_fields_items,
+    get_fields_values,
+)
 from states.projects import CrPrEnum
 
 
