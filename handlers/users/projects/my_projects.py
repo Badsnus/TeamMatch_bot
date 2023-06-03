@@ -7,8 +7,9 @@ from models import Project, User
 
 
 @dp.callback_query_handler(text=ProjectsKeyboard.my_projects_call)
-async def show_projects_list(call: types.CallbackQuery, user: User,
-                             state: FSMContext) -> None:
+async def show_projects_list(call: types.CallbackQuery,
+                             state: FSMContext,
+                             user: User) -> None:
     await state.finish()  # DONT TOUCH
 
     projects = await Project.get_projects_by_user(user.id)

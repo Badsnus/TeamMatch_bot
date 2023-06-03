@@ -134,6 +134,14 @@ class Project(Base):
         if commit:
             await session.commit()
 
+    @staticmethod
+    async def delete_by_id(project_id: int) -> None:
+        await session.execute(
+            delete(Project)
+            .where(Project.id == project_id),
+        )
+        await session.commit()
+
 
 class Employee(Base):
     __tablename__ = 'employee'
@@ -209,6 +217,16 @@ class Employee(Base):
         await session.execute(
             delete(Employee)
             .where(Employee.id == employee_id),
+        )
+        await session.commit()
+
+    @staticmethod
+    async def delete_by_user_and_project_id(user_id: int,
+                                            project_id: int) -> None:
+        await session.execute(
+            delete(Employee)
+            .where(Employee.user_id == user_id)
+            .where(Employee.project_id == project_id),
         )
         await session.commit()
 

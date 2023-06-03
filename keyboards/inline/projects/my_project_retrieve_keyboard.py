@@ -9,7 +9,7 @@ class MyProjectRetrieveKeyboard:
     edit_cand_call = 'projects_my_edit_candidates-'
     edit_set_call = 'projects_my_edit_settings-'
     edit_match_call = 'projects_my_edit_match-'
-    delete_project_call = 'projects_my_delete'
+    delete_project_call = 'projects_my_delete-'
 
     leave_call = 'projects_my_leave-'
 
