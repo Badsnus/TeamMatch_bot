@@ -39,6 +39,10 @@ class Project(Base):
         back_populates='project', cascade='all, delete-orphan',
     )
 
+    matched_projects: orm.Mapped[list['ProjectMatched']] = orm.relationship(
+        back_populates='project'
+    )
+
     invites_to_employee: orm.Mapped[list['InviteToEmployee']] = (
         orm.relationship(
             back_populates='project',

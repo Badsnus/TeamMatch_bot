@@ -53,7 +53,6 @@ class User(Base):
         secondary='employee', back_populates='users',
     )
     employees: orm.Mapped[list['Employee']] = orm.relationship(
-        'Employee',
         back_populates='user',
     )
     invites_to_employee: orm.Mapped[list['InviteToEmployee']] = (
