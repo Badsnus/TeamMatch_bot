@@ -1,6 +1,6 @@
 import asyncio
 
-from sqlalchemy import ForeignKey, orm, select
+from sqlalchemy import delete, ForeignKey, orm, select
 from sqlalchemy.sql.functions import count
 
 from loader import session
@@ -52,3 +52,14 @@ class InviteToEmployee(Base):
         return await session.scalar(
             select(count()).where(InviteToEmployee.user_id == user_id)
         )
+
+    @staticmethod
+    async def delete(project_id: int, user_id: int) -> None:
+        await session.execute(
+            delete(InviteToEmployee)
+            .where(
+                (InviteToEmployee.project_id == project_id) &
+                (InviteToEmployee.user_id == user_id)
+            )
+        )
+        await session.commit()

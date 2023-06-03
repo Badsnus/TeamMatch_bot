@@ -158,7 +158,7 @@ class Employee(Base):
 
     id: orm.Mapped[int] = orm.mapped_column(primary_key=True)
 
-    role: orm.Mapped[str] = orm.mapped_column(String(30), default='CEO')
+    role: orm.Mapped[str] = orm.mapped_column(String(30), default='No_role')
     is_owner: orm.Mapped[bool] = orm.mapped_column(Boolean(), default=False)
 
     project_id: orm.Mapped[int] = orm.mapped_column(ForeignKey('project.id'))
@@ -207,7 +207,7 @@ class Employee(Base):
 
     @staticmethod
     async def get_by_project_and_user_id(project_id: int,
-                                         user_id: int) -> Employee:
+                                         user_id: int) -> Employee | None:
         return await session.scalar(
             select(Employee)
             .where(Employee.project_id == project_id)

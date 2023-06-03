@@ -3,7 +3,7 @@ from aiogram.utils.exceptions import BadRequest
 
 from keyboards.inline.projects import ProjectNoticeKeyboard, ProjectsKeyboard
 from loader import dp
-from models import Project, User
+from models import Employee, InviteToEmployee, Project, User
 from services.project_profile import get_project_profile_text
 from utils.delete_message import try_delete_message
 
@@ -33,3 +33,29 @@ async def show_project_profile(call: types.CallbackQuery) -> None:
         reply_markup=ProjectNoticeKeyboard.get_verdict_keyboard(project_id),
     )
     await try_delete_message(call.message)
+
+
+@dp.callback_query_handler(
+    text_startswith=ProjectNoticeKeyboard.approve_invite_call)
+async def approve_invite(call: types.CallbackQuery, user: User) -> None:
+    await try_delete_message(call.message)
+
+    project_id = ProjectNoticeKeyboard.parse_project_id(call.data)
+    employee = await Employee.get_by_project_and_user_id(
+        project_id=project_id,
+        user_id=user.id,
+    )
+    keyboard = ProjectNoticeKeyboard.get_back_keyboard()
+
+    if employee:
+        await call.message.answer('Вы уже в проекте', reply_markup=keyboard)
+        return
+
+    # TODo уже похер, но надо бы транзакцию
+    await Employee(user_id=user.id, project_id=project_id).save()
+    await InviteToEmployee.delete(project_id=project_id, user_id=user.id)
+
+    await call.message.answer(
+        'Вы приняли приглашение в проект',
+        reply_markup=keyboard,
+    )

@@ -5,10 +5,11 @@ from models import Project
 
 
 class ProjectNoticeKeyboard:
-    check_project_call = 'project_notice_check-'
+    prefix = 'project_notice_'
+    check_project_call = prefix + 'check-'
 
-    approve_invite_call = 'project_notice_approve-'
-    reject_invite_call = 'project_notice_reject-'
+    approve_invite_call = prefix + 'approve-'
+    reject_invite_call = prefix + 'reject-'
 
     @classmethod
     def parse_project_id(cls, call_data: str) -> int:
@@ -18,6 +19,13 @@ class ProjectNoticeKeyboard:
     @staticmethod
     def generate_call_data(prefix: str, project_id: int) -> str:
         return prefix + str(project_id)
+
+    @staticmethod
+    def get_back_button() -> InlineKeyboardButton:
+        return InlineKeyboardButton(
+            'Вернуться назад',
+            callback_data=ProjectsKeyboard.project_notice_call,
+        )
 
     @classmethod
     def get_keyboard(cls, project: list[Project]) -> InlineKeyboardMarkup:
@@ -60,9 +68,12 @@ class ProjectNoticeKeyboard:
                 ),
             ],
             [
-                InlineKeyboardButton(
-                    'Вернуться назад',
-                    callback_data=ProjectsKeyboard.project_notice_call,
-                ),
+                cls.get_back_button()
             ],
         ])
+
+    @classmethod
+    def get_back_keyboard(cls):
+        return InlineKeyboardMarkup(inline_keyboard=[[
+            cls.get_back_button()
+        ]])
