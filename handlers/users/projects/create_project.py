@@ -106,8 +106,8 @@ async def create_project(call: types.CallbackQuery,
         project = Project(**data)
         await project.save()
 
-    except ValidationError:
-        await call.answer('Заполните все обязательные поля')
+    except ValidationError as ex:
+        await call.answer(ex.message)
         return
     # TODO мб тут редирект на страницу проекта?
     await call.message.edit_text(

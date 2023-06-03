@@ -6,6 +6,9 @@ class StringValidator:
         self.max_length = max_length
         self.min_length = min_length
 
-    def is_valid(self, string: str) -> None:
+    def is_valid(self, string: str, string_name: str = 'строки') -> None:
         if not (self.max_length >= len(string) >= self.min_length):
-            raise ValidationError
+            raise ValidationError(
+                f'длина {string_name} должна быть '
+                f'от {self.min_length} до {self.max_length}',
+            )

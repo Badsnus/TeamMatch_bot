@@ -28,7 +28,7 @@ def get_create_project_text(
 {format_field_text('Название', name)}
 {format_field_text('Описание', description)}
 {format_field_text('Логотип', logo_image_id)}
-{format_field_text('Ссылка на проект', project_url)}
+{format_field_text('Ссылка на проект <code>(Необязательно)</code>', project_url)}
     '''
 
 

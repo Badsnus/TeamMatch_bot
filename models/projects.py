@@ -37,14 +37,18 @@ class Project(Base):
 
     def check_valid(self):
         max_name_length = self.__table__.c.name.type.length
-        StringValidator(max_length=max_name_length).is_valid(self.name)
+        StringValidator(max_length=max_name_length).is_valid(
+            self.name, 'названия',
+        )
 
         max_desc_length = self.__table__.c.description.type.length
-        StringValidator(max_length=max_desc_length).is_valid(self.description)
+        StringValidator(max_length=max_desc_length).is_valid(
+            self.description, 'описания',
+        )
 
         max_logo_length = self.__table__.c.logo_image_id.type.length
         StringValidator(max_length=max_logo_length).is_valid(
-            self.logo_image_id,
+            self.logo_image_id, 'изображения',  # TODO тут кринжа
         )
 
         max_project_url_length = self.__table__.c.project_url.type.length
