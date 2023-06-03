@@ -76,6 +76,15 @@ class Project(Base):
         if commit:
             await session.commit()
 
+    async def create_project_with_owner(self, owner: User) -> Project:
+        # TODO тут бы конечно транзакцию надо
+        await self.save()
+
+        employee = Employee(project_id=self.id, user_id=owner.id)
+        await employee.save()
+
+        return self
+
 
 class Employee(Base):
     __tablename__ = 'employee'
@@ -86,6 +95,12 @@ class Employee(Base):
 
     project_id: orm.Mapped[int] = orm.mapped_column(ForeignKey('project.id'))
     user_id: orm.Mapped[int] = orm.mapped_column(ForeignKey('user.id'))
+
+    async def save(self, commit=True) -> None:
+        session.add(self)
+
+        if commit:
+            await session.commit()
 
 
 class Candidate(Base):

@@ -16,7 +16,7 @@ class ProjectKeyboard:
                 callback_data=create_project_call,
             ),
             InlineKeyboardButton(
-                'Редактировать проекты',
+                'Мои проекты',
                 callback_data=my_projects_call,
             ),
         ],

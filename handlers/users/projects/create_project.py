@@ -7,7 +7,7 @@ from keyboards.inline.projects import (
     CreateProjectKeyboard,
     ProjectKeyboard,
 )
-from models import Project
+from models import Project, User
 from models.exceptions import ValidationError
 from loader import bot, dp
 from services.projects import (
@@ -99,12 +99,13 @@ async def set_logo(message: types.Message, state: FSMContext) -> None:
 
 @dp.callback_query_handler(text=CreateProjectKeyboard.approve_create_call)
 async def create_project(call: types.CallbackQuery,
+                         user: User,
                          state: FSMContext) -> None:
     data = get_fields_items(await state.get_data())
 
     try:
         project = Project(**data)
-        await project.save()
+        await project.create_project_with_owner(user)
 
     except ValidationError as ex:
         await call.answer(ex.message)
