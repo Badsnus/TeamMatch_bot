@@ -1,11 +1,10 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
-from keyboards.inline.projects import BACK_TO_PROJECTS_CALL
-
 
 class MatchKeyboard:
     give_info_call = 'match_give_info-'
     next_project_call = 'match_next_project-'
+    back_to_project_menu = 'match_back_to_project_menu'
 
     @staticmethod
     def parse_project_id(call_data: str) -> int:
@@ -31,7 +30,7 @@ class MatchKeyboard:
             [
                 InlineKeyboardButton(
                     text='Выйти',
-                    callback_data=BACK_TO_PROJECTS_CALL,
+                    callback_data=cls.back_to_project_menu,
                 ),
                 InlineKeyboardButton(
                     text='Некст проект',
