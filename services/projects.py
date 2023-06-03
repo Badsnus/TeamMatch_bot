@@ -1,6 +1,6 @@
 from data.config import BOT_URL_FOR_REF
 from keyboards.inline.projects import CreateProjectKeyboard
-from models import Employee, Project
+from models import Candidate, Employee, Project
 
 
 def get_link_to_user(id: int, text: str) -> str:
@@ -84,4 +84,12 @@ def get_employee_text(employee: Employee) -> str:
 <b>Ссылка:</b> {get_link_to_user(employee.user_id, employee.user.name)}
 
 <b>Роль:</b> <code>{employee.role}</code>
+    '''
+
+
+def get_candidate_text(candidate: Candidate) -> str:
+    return f'''
+<b>Роль:</b> <code>{candidate.role}</code>
+
+<b>Описание:</b> <code>{candidate.description}</code>
     '''

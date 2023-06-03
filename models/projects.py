@@ -225,3 +225,16 @@ class Candidate(Base):
     project: orm.Mapped[Project] = orm.relationship(
         back_populates='candidates',
     )
+
+    @classmethod
+    async def get(cls, candidate_id: int) -> Candidate:
+        candidate = await session.scalar(
+            select(Candidate)
+            .where(Candidate.id == candidate_id)
+            .limit(1),
+        )
+
+        if candidate is None:
+            raise Exception  # TODO ексепшен сюда
+
+        return candidate

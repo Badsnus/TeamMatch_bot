@@ -9,7 +9,7 @@ class MyProjectCandidatesKeyboard:
     add_candidate_call = 'my_projects_candidates_add'
 
     @classmethod
-    def parse_employee_id(cls, call_data: str) -> int:
+    def parse_candidate_id(cls, call_data: str) -> int:
         return int(call_data.replace(cls.edit_candidate_call, ''))
 
     @classmethod
