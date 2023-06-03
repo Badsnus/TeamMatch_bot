@@ -1,4 +1,5 @@
 from models import User, UserContact, UserExperience, UserSkill
+from services.projects import get_link_to_user
 from utils.format_data import format_username
 
 
@@ -9,18 +10,18 @@ def get_experience_text(experience: list[UserExperience]) -> str:
     )
     if not experience_text:
         experience_text = '<code>Опыта пока что нет нет :(</code>'
-    return '\n<b>Ваш опыт:</b>\n' + experience_text
+    return '\n\n<b>Ваш опыт:</b>\n' + experience_text
 
 
 def get_current_skills_text(skills: list[UserSkill]) -> str:
     skills_text = ';'.join(skill.name for skill in skills)
     if not skills_text:
         skills_text = 'Скиллов пока что нет нет :('
-    return '\n<b>Ваши скиллы:</b>\n<code>' + skills_text + '</code>'
+    return '\n\n<b>Ваши скиллы:</b>\n<code>' + skills_text + '</code>'
 
 
 def get_profile_text(user: User) -> str:
-    contacts_text = '\n<b>Ваши контакты:</b>\n' + '\n'.join(
+    contacts_text = '\n\n<b>Ваши контакты:</b>\n' + '\n'.join(
         (f'<code>{contact.name}</code> - {contact.link}' for contact in
          user.contacts),
     ) if user.contacts else ''
@@ -30,22 +31,21 @@ def get_profile_text(user: User) -> str:
     )
     date_of_reg = user.registration_time.date()
 
-    return f'''
+    return (
+            f'''
 <b>Профиль</b> | ID: <code>{user.id}</code>
 
-Имя: <b>{user.name}</b>
-Юзернейм: <b>{format_username(user.telegram_username)}</b>
-Дата регистрации: <code>{date_of_reg}</code>
-{contacts_text}
-{skills_text}
-{experience_text}
-    '''
+<b>Имя:</b> {get_link_to_user(user.id, user.name)}
+<b>Юзернейм:</b> {format_username(user.telegram_username)}
+<b>Дата регистрации::</b> <code>{date_of_reg}</code>''' +
+            f'{contacts_text}{skills_text}{experience_text}'
+    )
 
 
 def get_contact_text(contact: UserContact) -> str:
     return f'''
-Имя: <code>{contact.name}</code>
-Ссылка: {contact.link}
+<b>Имя:</b> <code>{contact.name}</code>
+<b>Ссылка:</b> <code>{contact.link}</code>
     '''
 
 
