@@ -18,7 +18,11 @@ async def show_some_profile_by_args(message: types.Message) -> None:
         return
 
     if name == ArgsFields.user.value:
-        user = await User.get_user_with_projects(user_id=id)
+        try:
+            user = await User.get_user_with_projects(user_id=id)
+        except:  # TODO похер
+            await message.answer('<code>Я не знаю такого юзера :( </code>')
+            return
 
         await message.answer(get_text_for_args_show_user(user))
         return

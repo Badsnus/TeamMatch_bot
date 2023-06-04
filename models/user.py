@@ -80,8 +80,8 @@ class User(Base):
         user = await session.scalar(
             select(User)
             .where(User.id == user_id)
-            .join(Employee, Employee.user_id == user_id)
-            .join(Project, Employee.project_id == Project.id)
+            .outerjoin(Employee, Employee.user_id == user_id)
+            .outerjoin(Project, Employee.project_id == Project.id)
             .outerjoin(UserContact)
             .outerjoin(UserSkill)
             .outerjoin(UserExperience)
