@@ -5,8 +5,8 @@ ___
 ## Скрины и скринкаст проекта + презентация:
 
 ---
-
-это будет тут
+скринкаст:
+https://drive.google.com/file/d/1M0yTfKaEsWoGJSfIVP6IFMliewDo2n4v/view?usp=sharing
 
 ## Немного про проект
 
