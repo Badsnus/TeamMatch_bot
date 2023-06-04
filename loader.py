@@ -17,7 +17,7 @@ bot = Bot(
 )
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
-engine = create_async_engine(config.DB_PATH, echo=True)
+engine = create_async_engine(config.DB_PATH, echo=False)
 session_factory = async_sessionmaker(
     engine,
     expire_on_commit=False,
